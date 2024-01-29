@@ -1,0 +1,14 @@
+services:
+  auth-service:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+
+  database:
+    image: postgres:16.1
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
