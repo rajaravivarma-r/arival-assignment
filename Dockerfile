@@ -17,4 +17,4 @@ RUN bundle install
 COPY . /app
 
 
-CMD ["ruby", "main.rb"]
+CMD ["bundle", "exec", "puma", "--port", "3000", "--bind", "tcp://0.0.0.0"]
