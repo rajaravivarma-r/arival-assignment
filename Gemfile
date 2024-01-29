@@ -10,3 +10,7 @@ group :test do
   gem 'rack-test', '~> 2.1'
   gem 'rspec', '~> 3.12'
 end
+
+group :development, :test do
+  gem 'byebug', '~> 11.1'
+end
