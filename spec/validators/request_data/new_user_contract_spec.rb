@@ -1,5 +1,4 @@
-require 'spec_helper'
-require_relative '../../../app/validators/request_data/new_user_contract'
+require 'app_helper'
 
 RSpec.describe Validators::RequestData::NewUserContract do
   let(:contract) { described_class.new }
