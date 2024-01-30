@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Validators
   module RequestData
+    # Contract to validate new user registration params
     class NewUserContract < Dry::Validation::Contract
       params do
         required(:email).filled(:string)
