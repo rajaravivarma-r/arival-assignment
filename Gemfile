@@ -18,3 +18,5 @@ group :development, :test do
 end
 
 gem 'dry-validation', '~> 1.10'
+
+gem 'sequel', '~> 5.76'
