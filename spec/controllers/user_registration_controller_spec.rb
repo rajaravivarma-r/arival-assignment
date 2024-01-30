@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'app_helper'
 
 RSpec.describe UserRegistrationController do

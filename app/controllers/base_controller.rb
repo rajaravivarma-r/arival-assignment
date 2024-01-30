@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+# Analogous to ApplicationController in Rails
+# Add useful helper methods to this base class, and add common
+# behaviour that all other controllers should have.
 class BaseController < Sinatra::Base
   private
 

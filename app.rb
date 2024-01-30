@@ -1,5 +1,5 @@
-require 'sinatra'
+# frozen_string_literal: true
 
-get '/' do
-  'hello world'
-end
+require 'sinatra/base'
+
+require_relative 'app/controllers/user_registration_controller'

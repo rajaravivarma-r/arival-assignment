@@ -1,11 +1,9 @@
-require 'json'
+# frozen_string_literal: true
 
+# Controller to handle new user registration
 class UserRegistrationController < Sinatra::Base
   post '/users' do
-    case json_body
-    in { email: String, password: String, password_verification: String }
-    else
-      raise InvalidRequestError, 'Request body not in acceptable format'
-    end
+    new_user_contract = Validators::RequestData::NewUserContract.new
+    new_user_contract.call(json_request_body)
   end
 end

@@ -1,7 +1,5 @@
-require 'bundler'
+# frozen_string_literal: true
 
-Bundler.require
+require_relative 'config/init'
 
-require_relative './app'
-
-run Sinatra::Application
+run UserRegistrationController
