@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
 require_relative '../environment'
 
-App.environment = 'production'
+App.configure do |config|
+  config.environment = 'production'
+end
