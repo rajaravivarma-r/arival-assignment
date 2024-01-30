@@ -12,9 +12,9 @@ group :test do
 end
 
 group :development, :test do
-  gem 'byebug', '~> 11.1'
-  gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'byebug', '~> 11.1', require: false
+  gem 'rubocop', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 gem 'dry-validation', '~> 1.10'
