@@ -12,6 +12,10 @@ services:
     image: postgres:16.1
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
+      - POSTGRES_USER=arival
       - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=arival
 
