@@ -13,6 +13,8 @@ end
 
 group :development, :test do
   gem 'byebug', '~> 11.1'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
 end
 
-gem "dry-validation", "~> 1.10"
+gem 'dry-validation', '~> 1.10'
