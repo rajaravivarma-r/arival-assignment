@@ -6,6 +6,9 @@ require_relative 'init'
 
 ENV['APP_ENV'] ||= 'development'
 
+Bundler.require(:default, ENV['APP_ENV'])
+Dotenv.load
+
 # Used to load configuration from files residing in App.config.config_path
 class ConfigFile
   # Thrown when the config file is not in the recognized file type
@@ -65,10 +68,12 @@ class App
 
   setting :database_config do
     setting :adapter
-    setting :pool
+    setting :max_connections
     setting :database
     setting :username
     setting :password
+    setting :host
+    setting :port
   end
 
   class << self
@@ -105,4 +110,9 @@ end
 
 # Loading all files under app/ directory by default
 # Add zeitwerk when autoloading becomes necessary
+App.config.config_path.join('initializers').glob('**/*.rb').sort.each do |f|
+  require f
+end
 App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
+
+
