@@ -22,3 +22,5 @@ gem 'dry-validation', '~> 1.10'
 gem 'sequel', '~> 5.76'
 
 gem 'pg', '~> 1.5'
+
+gem 'bcrypt', '~> 3.1'
