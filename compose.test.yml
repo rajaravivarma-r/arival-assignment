@@ -8,15 +8,14 @@ services:
     depends_on:
       - database
     env_file:
-      - .env.development
+      - .env.test
 
   database:
     image: postgres:16.1
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
-      - ./db/scripts/initialize-databases.sh:/docker-entrypoint-initdb.d/initialize-databases.sh
     ports:
       - "5432:5432"
     env_file:
-      - .env.development
+      - .env.test
 
