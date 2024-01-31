@@ -79,6 +79,13 @@ class App
         end
       end
     end
+
+    def load_current_environment!
+      current_environment_file = App.config.config_path.join(
+        'environments', App.config.environment
+      )
+      require current_environment_file.to_s
+    end
   end
 end
 
@@ -94,3 +101,7 @@ App.configure do |config|
     configurations: database_configurations, config_name: :database_config
   )
 end
+
+# Loading all files under app/ directory by default
+# Add zeitwerk when autoloading becomes necessary
+App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
