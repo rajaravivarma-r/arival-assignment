@@ -8,6 +8,7 @@ ENV['APP_ENV'] ||= 'development'
 
 # Used to load configuration from files residing in App.config.config_path
 class ConfigFile
+  # Thrown when the config file is not in the recognized file type
   class UnRecognizedFileType < StandardError
     def initialize(file_name)
       super("#{file_name} has unrecognized file type")
