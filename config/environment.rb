@@ -7,7 +7,6 @@ require_relative 'init'
 ENV['APP_ENV'] ||= 'development'
 
 Bundler.require(:default, ENV['APP_ENV'])
-Dotenv.load
 
 # Used to load configuration from files residing in App.config.config_path
 class ConfigFile

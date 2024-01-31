@@ -3,4 +3,3 @@
 require 'bundler/setup'
 require 'json'
 require 'yaml'
-Bundler.require(:default)
