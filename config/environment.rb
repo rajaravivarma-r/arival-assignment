@@ -6,6 +6,7 @@ require_relative 'init'
 
 ENV['APP_ENV'] ||= 'development'
 
+Dotenv.load(".env.#{ENV['APP_ENV']}")
 Bundler.require(:default, ENV['APP_ENV'])
 
 # Used to load configuration from files residing in App.config.config_path
@@ -76,6 +77,7 @@ class App
   end
 
   class << self
+    # TODO: Replace this with the built-in update method
     def set_config(configurations:, config_name:)
       App.configure do |config|
         nested_config_object = config.send(config_name)
@@ -90,6 +92,28 @@ class App
         'environments', App.config.environment
       )
       require current_environment_file.to_s
+    end
+
+    def load_initializers!
+      # Loading all files under app/ directory by default
+      # Add zeitwerk when autoloading becomes necessary
+      App.config.config_path.join('initializers').glob('**/*.rb').sort.each do |f|
+        require f
+      end
+    end
+
+    def load_models!
+      App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
+    end
+
+    # Creates the following methods on the App class
+    # * development_environment?
+    # * test_environment?
+    # * production_environment?
+    ['development', 'test', 'production'].each do |environment|
+      define_method("#{environment}_environment?") do
+        App.config.environment == environment
+      end
     end
   end
 end
@@ -106,12 +130,3 @@ App.configure do |config|
     configurations: database_configurations, config_name: :database_config
   )
 end
-
-# Loading all files under app/ directory by default
-# Add zeitwerk when autoloading becomes necessary
-App.config.config_path.join('initializers').glob('**/*.rb').sort.each do |f|
-  require f
-end
-App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
-
-

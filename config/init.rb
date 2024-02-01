@@ -3,3 +3,4 @@
 require 'bundler/setup'
 require 'json'
 require 'yaml'
+require 'dotenv'

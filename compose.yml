@@ -1,3 +1,4 @@
+name: auth-service
 services:
   auth-service:
     build: .
@@ -7,8 +8,6 @@ services:
       - .:/app
     depends_on:
       - database
-    env_file:
-      - .env.development
 
   database:
     image: postgres:16.1
@@ -16,6 +15,7 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    env_file:
-      - .env.development
-
+    environment:
+      - POSTGRES_USER=arival
+      - POSTGRES_PASSWORD=73d2df53f2df009d
+      - POSTGRES_DB=arival_development
