@@ -1,10 +1,9 @@
 ## Docker Instructions
 ### First time setup
-* When setting up the App for the first time, just bring the database service up by running
- `docker compose up database`. This will init the database and setup the data directory
-* In another terminal bring the app service up by running `docker compose up auth-service`, to run
-  the web server
-* To bring the REPL run `docker compose run -it auth-service /bin/sh`
+* When setting up the App for the first time, just bring the database service up by running `docker compose up database`. This will init the database and setup the data directory
+* In another terminal bring the app service up by running `docker compose run -it auth-service /bin/sh` and run the migrations `bundle exec rake db:migrate`
+* After that bring up the web service by running `docker compose up auth-service`
+* To bring the REPL run `docker compose run -it auth-service /bin/sh` and inside the container run `bin/console`
 
 #### Database debugging
 * To run psql inside the docker container run `docker compose run -it database /bin/bash` and enter the command `psql -U arival --dbname arival_development --host database --port 5432`
@@ -21,18 +20,16 @@
 #### For development environment
 Building the image suitable for development environment (with build tools like compilers and make)
 `docker buildx build .`
-
-#### For production environment
-`docker buildx build --build-arg BUILD_ENVIRONMENT=production . -t auth-service:latest`
-
 **Note:** In old versions of docker you may have to run `DOCKER_BUILDKIT=1 docker build .`
 
 ### Development
-#### REPL
-* Use `bundle exec irb` to load the console
 * Build a new image using `docker compose up --build` after adding a new gem
 
 #### Migrations
 ##### Note
 When starting the App for the first time
 * Use `bundle exec rake db:migrate`
+
+### Testing
+* Create test database using `APP_ENV=test bundle exec rake db:create`
+* Migrate the test database using `APP_ENV=test bundle exec rake db:migrate`
