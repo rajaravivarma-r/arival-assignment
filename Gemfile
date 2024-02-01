@@ -12,6 +12,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'dotenv'
   gem 'byebug', '~> 11.1', require: false
   gem 'rubocop', require: false
   gem 'rubocop-rspec', require: false
@@ -24,3 +25,5 @@ gem 'sequel', '~> 5.76'
 gem 'pg', '~> 1.5'
 
 gem 'bcrypt', '~> 3.1'
+
+gem 'rake', require: false
