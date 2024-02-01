@@ -4,6 +4,8 @@ require:
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.3
+  Exclude:
+    - 'db/schema.rb'
 
 RSpec/MultipleExpectations:
   Enabled: false

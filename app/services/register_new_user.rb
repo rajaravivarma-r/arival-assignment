@@ -17,7 +17,7 @@ class RegisterNewUser < BaseService
 
   def call
     if (validation_result = validate_params!).failure?
-      return Result.new(success: false, errors: validation_result.errors)
+      return Result.failure(errors: errors_from_hash(validation_result.errors.to_h))
     end
     password_hash = BCrypt::Password.create(password)
 
@@ -25,15 +25,17 @@ class RegisterNewUser < BaseService
       email: email,
       password_hash: password_hash
     )
-    Result.new(success: true, value: user)
+    Result.success(value: user)
   rescue Sequel::Error, PG::Error => e
-    Result.new(success: false, errors: [e.message])
+    Result.failure(
+      errors: construct_error(field: 'user', error_messages: 'Could not create user')
+    )
   end
 
   private
 
   def validate_params!
     new_user_contract = Validators::RequestData::NewUserContract.new
-    new_user_contract.call(json_request_body)
+    new_user_contract.call(email:, password:, password_verification:)
   end
 end
