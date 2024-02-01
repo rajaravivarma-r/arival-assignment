@@ -45,7 +45,7 @@ namespace :db do
     `#{migration_command}`
     puts "Dumping the schema"
 
-    break if App.development_environment?
+    next if App.development_environment?
     # TODO: Handle errors
     schema_output = `#{schema_dump_command}`
     schema_file_path.write(schema_output)
