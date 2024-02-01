@@ -4,7 +4,7 @@ require 'app_helper'
 
 RSpec.describe App do
   let(:adapter) { 'postgres' }
-  let(:pool) { 5 }
+  let(:max_connections) { 5 }
 
   describe '.set_config' do
     let(:database) { 'arival-test' }
@@ -13,7 +13,7 @@ RSpec.describe App do
     let(:configurations) do
       {
         'adapter' => adapter,
-        'pool' => pool,
+        'max_connections' => max_connections,
         'database' => database,
         'username' => username,
         'password' => password
@@ -24,7 +24,7 @@ RSpec.describe App do
     it 'loads the provided configurations into the corresponding config' do
       described_class.set_config(configurations:, config_name:)
       expect(described_class.config.database_config.adapter).to eq(adapter)
-      expect(described_class.config.database_config.pool).to eq(pool)
+      expect(described_class.config.database_config.max_connections).to eq(max_connections)
       expect(described_class.config.database_config.database).to eq(database)
       expect(described_class.config.database_config.username).to eq(username)
       expect(described_class.config.database_config.password).to eq(password)
@@ -61,7 +61,7 @@ RSpec.describe App do
 
       it 'loads the application configuration' do
         expect(described_class.config.database_config.adapter).to eq(adapter)
-        expect(described_class.config.database_config.pool).to eq(pool)
+        expect(described_class.config.database_config.max_connections).to eq(max_connections)
         expect(described_class.config.database_config.database).to eq(database)
         expect(described_class.config.database_config.username).to eq(username)
         expect(described_class.config.database_config.password).to eq(password)
@@ -76,7 +76,7 @@ RSpec.describe App do
 
       it 'loads the application configuration' do
         expect(described_class.config.database_config.adapter).to eq(adapter)
-        expect(described_class.config.database_config.pool).to eq(pool)
+        expect(described_class.config.database_config.max_connections).to eq(max_connections)
         expect(described_class.config.database_config.database).to eq(database)
         expect(described_class.config.database_config.username).to eq(username)
         expect(described_class.config.database_config.password).to eq(password)
@@ -91,7 +91,7 @@ RSpec.describe App do
 
       it 'loads the application configuration' do
         expect(described_class.config.database_config.adapter).to eq(adapter)
-        expect(described_class.config.database_config.pool).to eq(pool)
+        expect(described_class.config.database_config.max_connections).to eq(max_connections)
         expect(described_class.config.database_config.database).to eq(database)
         expect(described_class.config.database_config.username).to eq(username)
         expect(described_class.config.database_config.password).to eq(password)
