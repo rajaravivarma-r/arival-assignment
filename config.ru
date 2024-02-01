@@ -3,5 +3,6 @@
 require_relative 'config/environment'
 
 App.load_current_environment!
+App.load_app_code!
 
 run UserRegistrationController

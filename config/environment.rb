@@ -102,7 +102,7 @@ class App
       end
     end
 
-    def load_models!
+    def load_app_code!
       App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
     end
 
@@ -130,3 +130,5 @@ App.configure do |config|
     configurations: database_configurations, config_name: :database_config
   )
 end
+
+App.load_initializers!
