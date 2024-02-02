@@ -44,6 +44,7 @@ GEM
       zeitwerk (~> 2.6)
     json (2.7.1)
     language_server-protocol (3.17.0.3)
+    multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.7.0)
@@ -111,6 +112,12 @@ GEM
       rack-protection (= 4.0.0)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
+    sinatra-contrib (4.0.0)
+      multi_json (>= 0.0.2)
+      mustermann (~> 3.0)
+      rack-protection (= 4.0.0)
+      sinatra (= 4.0.0)
+      tilt (~> 2.0)
     tilt (2.3.0)
     unicode-display_width (2.5.0)
     zeitwerk (2.6.12)
@@ -133,6 +140,7 @@ DEPENDENCIES
   rubocop-rspec
   sequel (~> 5.76)
   sinatra (~> 4.0)
+  sinatra-contrib
 
 BUNDLED WITH
    2.5.5
