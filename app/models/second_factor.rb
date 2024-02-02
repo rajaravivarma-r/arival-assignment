@@ -8,6 +8,12 @@ class SecondFactor < Sequel::Model
     set_unique_otp_secret
   end
 
+  class << self
+    def enable_for_user(user)
+      create(user_id: user.id, enabled: true)
+    end
+  end
+
   private
 
   def set_unique_otp_secret
