@@ -76,6 +76,12 @@ class App
     setting :port
   end
 
+  setting :secret do
+    setting :jwt_sign_private_key, default: ENV['JWT_TOKEN_SIGN_PRIVATE_KEY']
+    setting :jwt_sign_public_key, default: ENV['JWT_TOKEN_SIGN_PUBLIC_KEY']
+    setting :jwt_sign_algorithm, default: 'RS256'
+  end
+
   class << self
     # TODO: Replace this with the built-in update method
     def set_config(configurations:, config_name:)

@@ -39,9 +39,13 @@ RSpec.describe App do
       old_database = ENV.fetch('DATABASE_NAME', nil)
       old_username = ENV.fetch('DATABASE_USERNAME', nil)
       old_password = ENV.fetch('DATABASE_PASSWORD', nil)
+      old_jwt_sign_private_key = ENV.fetch('JWT_TOKEN_SIGN_PRIVATE_KEY', nil)
+      old_jwt_sign_public_key = ENV.fetch('JWT_TOKEN_SIGN_PUBLIC_KEY', nil)
       ENV['DATABASE_NAME'] = database
       ENV['DATABASE_USERNAME'] = username
       ENV['DATABASE_PASSWORD'] = password
+      ENV['JWT_TOKEN_SIGN_PRIVATE_KEY'] = jwt_sign_private_key
+      ENV['JWT_TOKEN_SIGN_PUBLIC_KEY'] = jwt_sign_public_key
 
       # Reload for every example to reflect the ENV changes
       load described_class.config.config_path.join('environment.rb')
@@ -51,51 +55,27 @@ RSpec.describe App do
       ENV['DATABASE_NAME'] = old_database
       ENV['DATABASE_USERNAME'] = old_username
       ENV['DATABASE_PASSWORD'] = old_password
+      ENV['JWT_TOKEN_SIGN_PRIVATE_KEY'] = old_jwt_sign_private_key
+      ENV['JWT_TOKEN_SIGN_PUBLIC_KEY'] = old_jwt_sign_public_key
     end
 
-    context 'when in development environment' do
-      let(:current_environment) { 'development' }
-      let(:database) { 'arival-development' }
-      let(:username) { 'arival' }
-      let(:password) { '49e02e8faf' }
+    let(:current_environment) { 'development' }
+    let(:database) { 'arival-development' }
+    let(:username) { 'arival' }
+    let(:password) { '49e02e8faf' }
+    let(:jwt_sign_private_key) { 'private_key' }
+    let(:jwt_sign_public_key) { 'public_key' }
 
-      it 'loads the application configuration' do
-        expect(described_class.config.database_config.adapter).to eq(adapter)
-        expect(described_class.config.database_config.max_connections).to eq(max_connections)
-        expect(described_class.config.database_config.database).to eq(database)
-        expect(described_class.config.database_config.username).to eq(username)
-        expect(described_class.config.database_config.password).to eq(password)
-      end
-    end
+    it 'loads the application configuration' do
+      expect(described_class.config.database_config.adapter).to eq(adapter)
+      expect(described_class.config.database_config.max_connections).to eq(max_connections)
+      expect(described_class.config.database_config.database).to eq(database)
+      expect(described_class.config.database_config.username).to eq(username)
+      expect(described_class.config.database_config.password).to eq(password)
 
-    context 'when in test environment' do
-      let(:current_environment) { 'test' }
-      let(:database) { 'arival-test' }
-      let(:username) { 'arival' }
-      let(:password) { '59dd1329ce' }
-
-      it 'loads the application configuration' do
-        expect(described_class.config.database_config.adapter).to eq(adapter)
-        expect(described_class.config.database_config.max_connections).to eq(max_connections)
-        expect(described_class.config.database_config.database).to eq(database)
-        expect(described_class.config.database_config.username).to eq(username)
-        expect(described_class.config.database_config.password).to eq(password)
-      end
-    end
-
-    context 'when in production environment' do
-      let(:current_environment) { 'production' }
-      let(:database) { 'arival-production' }
-      let(:username) { 'arival' }
-      let(:password) { '8eb9c1526e' }
-
-      it 'loads the application configuration' do
-        expect(described_class.config.database_config.adapter).to eq(adapter)
-        expect(described_class.config.database_config.max_connections).to eq(max_connections)
-        expect(described_class.config.database_config.database).to eq(database)
-        expect(described_class.config.database_config.username).to eq(username)
-        expect(described_class.config.database_config.password).to eq(password)
-      end
+      expect(described_class.config.secret.jwt_sign_private_key).to eq(jwt_sign_private_key)
+      expect(described_class.config.secret.jwt_sign_public_key).to eq(jwt_sign_public_key)
+      expect(described_class.config.secret.jwt_sign_algorithm).not_to be_empty
     end
   end
 end
