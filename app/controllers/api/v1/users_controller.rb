@@ -9,7 +9,7 @@ module Api
       namespace NAMESPACE do
         put '/users/update' do
           result = UpdateUser.new(
-            user: current_user, updated_attributes: json_request_body['user']
+            user: current_user, updated_attributes: json_request_body['user'] || {}
           ).call
           if result.success?
             serialized_user = JsonSerializers::UserSerializer.serialize(
