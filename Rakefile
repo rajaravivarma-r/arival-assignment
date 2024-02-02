@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Rakefile
 
 namespace :db do
@@ -6,7 +8,7 @@ namespace :db do
   end
 
   task :environment do
-    require_relative './config/environment'
+    require_relative 'config/environment'
     App.load_current_environment!
     App.load_initializers!
   end
@@ -31,7 +33,6 @@ namespace :db do
   end
 
   task migrate: [:environment] do
-    database_config = current_database_config
     DatabaseConnection.establish!
     database_url = DatabaseConnection.database_url
     migrations_path = DatabaseConnection.migrations_path
@@ -46,13 +47,13 @@ namespace :db do
 
     next unless App.development_environment?
 
-    puts "Dumping the schema"
+    puts 'Dumping the schema'
     # TODO: Handle errors
     schema_output = `#{schema_dump_command}`
     schema_file_path.write(schema_output)
   end
 
-  desc "generates a migration file with a timestamp and name"
+  desc 'generates a migration file with a timestamp and name'
   task :generate_migration, [:name] => [:environment] do |_, args|
     args.with_defaults(name: 'migration')
 
@@ -70,8 +71,6 @@ namespace :db do
     file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}_#{args.name}.rb"
     FileUtils.mkdir_p(migrations_path)
 
-    File.open(File.join(migrations_path, file_name), 'w') do |file|
-      file.write(migration_template)
-    end
+    File.write(File.join(migrations_path, file_name), migration_template)
   end
 end

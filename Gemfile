@@ -8,14 +8,14 @@ gem 'sinatra-contrib'
 gem 'puma', '~> 6.4'
 
 group :test do
+  gem 'database_cleaner-sequel'
   gem 'rack-test', '~> 2.1'
   gem 'rspec', '~> 3.12'
-  gem 'database_cleaner-sequel'
 end
 
 group :development, :test do
-  gem 'dotenv'
   gem 'byebug', '~> 11.1', require: false
+  gem 'dotenv'
   gem 'rubocop', require: false
   gem 'rubocop-rspec', require: false
 end

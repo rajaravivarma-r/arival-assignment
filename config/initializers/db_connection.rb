@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Handles database specific things
 class DatabaseConnection < SimpleDelegator
   class << self
     attr_reader :connection
@@ -9,7 +10,7 @@ class DatabaseConnection < SimpleDelegator
       database_config: App.config.database_config,
       logger: Logger.new('log/db.log')
     )
-      @connection ||= new(logger:, database_config:).connect
+      @establish ||= new(logger:, database_config:).connect
     end
 
     def database_exists?(database_name)
@@ -49,13 +50,15 @@ class DatabaseConnection < SimpleDelegator
     @connection = Sequel.connect(
       database_url,
       max_connections: database_config.max_connections,
-      logger: logger
+      logger:
     )
     __setobj__(@connection)
     self
   end
 
   def database_url
-    "#{database_config.adapter}://#{database_config.username}:#{database_config.password}@#{database_config.host}:#{database_config.port}/#{database_config.database}"
+    "#{database_config.adapter}://#{database_config.username}" \
+      ":#{database_config.password}@#{database_config.host}:" \
+      "#{database_config.port}/#{database_config.database}"
   end
 end

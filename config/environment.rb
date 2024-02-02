@@ -6,8 +6,8 @@ require_relative 'init'
 
 ENV['APP_ENV'] ||= 'development'
 
-Dotenv.load(".env.#{ENV['APP_ENV']}")
-Bundler.require(:default, ENV['APP_ENV'])
+Dotenv.load(".env.#{ENV.fetch('APP_ENV', nil)}")
+Bundler.require(:default, ENV.fetch('APP_ENV', nil))
 
 # Used to load configuration from files residing in App.config.config_path
 class ConfigFile
@@ -77,8 +77,14 @@ class App
   end
 
   setting :secret do
-    setting :jwt_sign_private_key, default: ENV['JWT_TOKEN_SIGN_PRIVATE_KEY']
-    setting :jwt_sign_public_key, default: ENV['JWT_TOKEN_SIGN_PUBLIC_KEY']
+    setting(
+      :jwt_sign_private_key,
+      default: OpenSSL::PKey::RSA.new(ENV.fetch('JWT_TOKEN_SIGN_PRIVATE_KEY', nil))
+    )
+    setting(
+      :jwt_sign_public_key,
+      default: OpenSSL::PKey::RSA.new(ENV.fetch('JWT_TOKEN_SIGN_PUBLIC_KEY', nil))
+    )
     setting :jwt_sign_algorithm, default: 'RS256'
   end
 
@@ -116,7 +122,7 @@ class App
     # * development_environment?
     # * test_environment?
     # * production_environment?
-    ['development', 'test', 'production'].each do |environment|
+    %w[development test production].each do |environment|
       define_method("#{environment}_environment?") do
         App.config.environment == environment
       end

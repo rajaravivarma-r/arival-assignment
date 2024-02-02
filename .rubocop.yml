@@ -6,6 +6,7 @@ AllCops:
   TargetRubyVersion: 3.3
   Exclude:
     - 'db/schema.rb'
+    - 'Rakefile'
 
 RSpec/MultipleExpectations:
   Enabled: false
@@ -18,3 +19,6 @@ RSpec/MultipleMemoizedHelpers:
 
 Metrics/MethodLength:
   Max: 20
+
+Lint/MissingSuper:
+  Enabled: false
