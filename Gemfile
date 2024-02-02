@@ -10,6 +10,7 @@ gem 'puma', '~> 6.4'
 group :test do
   gem 'rack-test', '~> 2.1'
   gem 'rspec', '~> 3.12'
+  gem 'database_cleaner-sequel'
 end
 
 group :development, :test do

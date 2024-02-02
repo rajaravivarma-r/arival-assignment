@@ -25,12 +25,17 @@ class RegisterNewUser < BaseService
 
     password_hash = BCrypt::Password.create(password)
 
+    require 'byebug'; byebug
     user = User.create(
       email:,
       password_hash:
     )
     Result.success(value: user)
-  rescue Sequel::Error, PG::Error
+  rescue Sequel::UniqueConstraintViolation => e
+    Result.failure(
+      errors: construct_error(field: 'user', error_messages: 'User already exists')
+    )
+  rescue Sequel::Error, PG::Error => e
     Result.failure(
       errors: construct_error(field: 'user', error_messages: 'Could not create user')
     )

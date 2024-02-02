@@ -11,7 +11,7 @@ RSpec.describe RegisterNewUser do
     it 'creates a new user successfully' do
       result = described_class.call(email:, password:, password_verification:)
       expect(result.success?).to be true
-      expect(result.value).to be_a(User)
+      expect(result.value.email).to eq(email)
     end
 
     it 'handles validation failure' do

@@ -19,11 +19,11 @@
 
 require 'rubygems'
 require 'bundler'
-Bundler.require(:default)
-
 require 'rack/test'
 
-ENV['RACK_ENV'] = 'test'
+ENV['RACK_ENV'] = ENV['APP_ENV'] = 'test'
+
+Bundler.require(:default, ENV['RACK_ENV'])
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

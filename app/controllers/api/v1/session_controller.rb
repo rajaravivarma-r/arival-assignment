@@ -5,7 +5,7 @@ module Api
   module V1
     class SessionController < BaseController
       namespace NAMESPACE do
-        post '/users' do
+        post '/login' do
           result = RegisterNewUser.call(
             **json_request_body.transform_keys(&:to_sym)
           )
