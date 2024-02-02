@@ -43,9 +43,10 @@ namespace :db do
     # TODO: Handle errors
     puts "Running #{migration_command}"
     `#{migration_command}`
-    puts "Dumping the schema"
 
-    next if App.development_environment?
+    next unless App.development_environment?
+
+    puts "Dumping the schema"
     # TODO: Handle errors
     schema_output = `#{schema_dump_command}`
     schema_file_path.write(schema_output)
