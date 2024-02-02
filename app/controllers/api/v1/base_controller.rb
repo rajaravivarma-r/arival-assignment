@@ -16,6 +16,10 @@ module Api
 
     private
 
+    def current_user
+      env[:current_user]
+    end
+
     def json_request_body
       # Convert to snake_case if required
       JSON.parse(request.body.read)

@@ -10,11 +10,8 @@ class UpdateUser < BaseService
   end
 
   def call
-    # Don't allow email to be updated
+    # NOTE: Don't allow email to be updated
     updated_attributes.delete(:email)
-    unless (password = updated_attributes.delete(:password).strip).empty?
-      updated_attributes[:password_hash] = BCrypt::Password.create(password)
-    end
     user.update(updated_attributes)
     Result.success(value: user)
   rescue Sequel::Error, PG::Error

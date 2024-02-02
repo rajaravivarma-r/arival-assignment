@@ -1,27 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples 'an authorized controller' do
-  def authorization_header(token)
-    { 'HTTP_AUTHORIZATION' => "Bearer #{token}" }
-  end
-
-  def app
-    described_class
-  end
-
-  let(:email) { 'test@example.com' }
-  let(:password) { 'password' }
-  let(:user) do
-    RegisterNewUser.call(
-      email:, password:, password_verification: password
-    ).value
-  end
-  let(:valid_token) do
-    UserSessionToken.issue(user, expires_in_seconds: 60)
-  end
-  let(:expired_token) do
-    UserSessionToken.issue(user, expires_in_seconds: -60)
-  end
+  include_context 'logged in user'
 
   let(:paths) do
     {

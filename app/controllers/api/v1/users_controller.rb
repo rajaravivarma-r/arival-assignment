@@ -8,7 +8,17 @@ module Api
 
       namespace NAMESPACE do
         put '/update' do
-          require 'byebug'; byebug
+          result = UpdateUser.new(
+            user: current_user, updated_attributes: json_request_body['user']
+          ).call
+          if result.success?
+            serialized_user = JsonSerializers::UserSerializer.serialize(
+              result.value
+            )
+            success_json(status: 200, value: serialized_user)
+          else
+            failure_json(status: 400, errors: result.errors)
+          end
         end
       end
     end

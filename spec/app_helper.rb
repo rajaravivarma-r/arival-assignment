@@ -4,6 +4,22 @@ require_relative '../config/environments/test'
 
 App.load_app_code!
 
-App.config.root_path.join('spec/support').glob('**/*.rb').sort.each do |f|
+spec_support_path = App.config.root_path.join('spec/support')
+
+spec_support_path.join('helpers').glob('**/*.rb').sort.each do |f|
   require f
+end
+spec_support_path.join('shared_context').glob('**/*.rb').sort.each do |f|
+  require f
+end
+spec_support_path.join('shared_examples').glob('**/*.rb').sort.each do |f|
+  require f
+end
+spec_support_path.glob('**/*.rb').sort.each do |f|
+  require f
+end
+
+RSpec.configure do |config|
+  config.include(TestRequestHelpers)
+  config.include(TestResponseHelpers)
 end
