@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples 'an authorized controller' do
-  include_context 'logged in user'
+  include_context 'with logged in user'
 
   let(:paths) do
     {

@@ -1,4 +1,6 @@
-RSpec.shared_context 'logged in user' do
+# frozen_string_literal: true
+
+RSpec.shared_context 'with logged in user' do
   def authorization_header(token)
     { 'HTTP_AUTHORIZATION' => "Bearer #{token}" }
   end

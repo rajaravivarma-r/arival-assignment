@@ -11,6 +11,7 @@ class User < Sequel::Model
 
   def password=(new_password)
     return if new_password.nil? || new_password.empty?
+
     self.password_hash = BCrypt::Password.create(new_password)
   end
 end

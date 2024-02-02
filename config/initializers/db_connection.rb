@@ -6,12 +6,14 @@ class DatabaseConnection < SimpleDelegator
     attr_reader :connection
 
     # WARNING: Not thread-safe. But okay, since it is a initialization code
+    # rubocop:disable Naming/MemoizedInstanceVariableName
     def establish!(
       database_config: App.config.database_config,
       logger: Logger.new('log/db.log')
     )
-      @establish ||= new(logger:, database_config:).connect
+      @connection ||= new(logger:, database_config:).connect
     end
+    # rubocop:enable Naming/MemoizedInstanceVariableName
 
     def database_exists?(database_name)
       res = connection.execute(
