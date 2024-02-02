@@ -7,7 +7,7 @@ module Api
       use JWTAuthorization
 
       namespace NAMESPACE do
-        put '/update' do
+        put '/users/update' do
           result = UpdateUser.new(
             user: current_user, updated_attributes: json_request_body['user']
           ).call
