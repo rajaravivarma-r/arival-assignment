@@ -26,7 +26,7 @@ RSpec.describe Api::V1::UserRegistrationController do
   describe 'POST /users' do
     context 'when user creation is successful' do
       it 'returns a success response' do
-        post '/users', valid_params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+        post '/api/v1/users', valid_params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
         body = JSON.parse(last_response.body)
         expect(last_response.status).to eq(201)
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::UserRegistrationController do
           { 'email' => ['has invalid format'] },
           { 'password' => ['should match password_verification'] }
         ]
-        post '/users', invalid_params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+        post '/api/v1/users', invalid_params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
         body = JSON.parse(last_response.body)
         expect(last_response.status).to eq(400)

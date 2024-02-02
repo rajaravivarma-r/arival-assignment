@@ -6,6 +6,7 @@
 module Api
   class BaseController < Sinatra::Base
     register Sinatra::Namespace
+    NAMESPACE = '/api/v1'
 
     before do
       content_type :json

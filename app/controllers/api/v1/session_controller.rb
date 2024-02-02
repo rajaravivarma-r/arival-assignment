@@ -3,7 +3,7 @@
 # Controller to handle new user registration
 module Api
   module V1
-    class SessionController < Api::BaseController
+    class SessionController < BaseController
       post '/users' do
         result = RegisterNewUser.call(
           **json_request_body.transform_keys(&:to_sym)
