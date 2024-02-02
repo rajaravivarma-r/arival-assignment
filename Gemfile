@@ -28,3 +28,5 @@ gem 'pg', '~> 1.5'
 gem 'bcrypt', '~> 3.1'
 
 gem 'rake', require: false
+
+gem 'jwt'

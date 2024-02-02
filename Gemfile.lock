@@ -43,6 +43,7 @@ GEM
       dry-schema (>= 1.12, < 2)
       zeitwerk (~> 2.6)
     json (2.7.1)
+    jwt (2.7.1)
     language_server-protocol (3.17.0.3)
     multi_json (1.15.0)
     mustermann (3.0.0)
@@ -131,6 +132,7 @@ DEPENDENCIES
   byebug (~> 11.1)
   dotenv
   dry-validation (~> 1.10)
+  jwt
   pg (~> 1.5)
   puma (~> 6.4)
   rack-test (~> 2.1)
