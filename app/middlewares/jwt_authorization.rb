@@ -10,7 +10,7 @@ class JWTAuthorization
 
   def call(env)
     bearer = env.fetch('HTTP_AUTHORIZATION', '').split[1]&.strip
-    env[:user] = UserSessionToken.get_user(bearer)
+    env[:current_user] = UserSessionToken.get_user(bearer)
     @app.call(env)
   rescue JWT::ExpiredSignature
     error_response(

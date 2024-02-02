@@ -121,9 +121,9 @@ class App
     end
 
     def load_app_code!
-      # Require helpers first, so that these are available when including
-      # them in other classes
+      # Require the code in order where it is a dependency for other code
       App.config.root_path.glob('app/helpers/**/*.rb').sort.each { |f| require f }
+      App.config.root_path.glob('app/middlewares/**/*.rb').sort.each { |f| require f }
       App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
     end
 

@@ -22,3 +22,7 @@ Metrics/MethodLength:
 
 Lint/MissingSuper:
   Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - 'config/environment.rb'
