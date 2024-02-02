@@ -18,7 +18,7 @@ RSpec.describe UserSessionToken do
       expect(token).not_to be_empty
       session_token = SessionToken.new
       expect(session_token.decode_payload(token_string: token).first).to(
-        include({ 'email' => email })
+        include({ 'email' => email, 'exp' => anything })
       )
     end
   end
