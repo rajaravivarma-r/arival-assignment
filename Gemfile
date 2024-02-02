@@ -33,3 +33,5 @@ gem 'rake', require: false
 gem 'jwt'
 
 gem 'sidekiq'
+
+gem 'rotp'

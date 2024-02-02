@@ -76,6 +76,7 @@ GEM
       connection_pool
     regexp_parser (2.9.0)
     rexml (3.2.6)
+    rotp (6.3.0)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -150,6 +151,7 @@ DEPENDENCIES
   puma (~> 6.4)
   rack-test (~> 2.1)
   rake
+  rotp
   rspec (~> 3.12)
   rubocop
   rubocop-rspec
