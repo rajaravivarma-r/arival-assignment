@@ -1,18 +1,23 @@
+# frozen_string_literal: true
+
+# Service to handle user login
 class LoginUser < BaseService
   attr_reader :email, :password
 
   class << self
-    def call
+    def call(...)
+      new(...).call
     end
   end
 
   def initialize(email:, password:)
+    super()
     @email = email
     @password = password
   end
 
   def call
-    user = User.find(email: email)
+    user = User.find(email:)
     unless user
       error = construct_error(field: 'user', error_messages: 'cannot find user')
       return Result.failure(errors: error)

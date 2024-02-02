@@ -30,11 +30,11 @@ class RegisterNewUser < BaseService
       password_hash:
     )
     Result.success(value: user)
-  rescue Sequel::UniqueConstraintViolation => e
+  rescue Sequel::UniqueConstraintViolation
     Result.failure(
       errors: construct_error(field: 'user', error_messages: 'User already exists')
     )
-  rescue Sequel::Error, PG::Error => e
+  rescue Sequel::Error, PG::Error
     Result.failure(
       errors: construct_error(field: 'user', error_messages: 'Could not create user')
     )

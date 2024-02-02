@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # require 'database_cleaner_sequel'
 # require 'database_cleaner'
 
@@ -8,11 +10,11 @@ RSpec.configure do |config|
     DatabaseCleaner[:sequel].start
   end
 
-  config.before :each do
+  config.before do
     DatabaseCleaner[:sequel].start
   end
 
-  config.after :each do
+  config.after do
     DatabaseCleaner[:sequel].clean
   end
 end
