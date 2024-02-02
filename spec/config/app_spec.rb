@@ -41,11 +41,20 @@ RSpec.describe App do
       old_password = ENV.fetch('DATABASE_PASSWORD', nil)
       old_jwt_sign_private_key = ENV.fetch('JWT_TOKEN_SIGN_PRIVATE_KEY', nil)
       old_jwt_sign_public_key = ENV.fetch('JWT_TOKEN_SIGN_PUBLIC_KEY', nil)
+
+      old_redis_host = ENV.fetch('REDIS_HOST', nil)
+      old_redis_port = ENV.fetch('REDIS_PORT', nil)
+      old_redis_password = ENV.fetch('REDIS_PASSWORD', nil)
+
       ENV['DATABASE_NAME'] = database
       ENV['DATABASE_USERNAME'] = username
       ENV['DATABASE_PASSWORD'] = password
       ENV['JWT_TOKEN_SIGN_PRIVATE_KEY'] = jwt_sign_private_key
       ENV['JWT_TOKEN_SIGN_PUBLIC_KEY'] = jwt_sign_public_key
+
+      ENV['REDIS_HOST'] = redis_host
+      ENV['REDIS_PORT'] = redis_port
+      ENV['REDIS_PASSWORD'] = redis_password
 
       # Reload for every example to reflect the ENV changes
       load described_class.config.config_path.join('environment.rb')
@@ -57,6 +66,10 @@ RSpec.describe App do
       ENV['DATABASE_PASSWORD'] = old_password
       ENV['JWT_TOKEN_SIGN_PRIVATE_KEY'] = old_jwt_sign_private_key
       ENV['JWT_TOKEN_SIGN_PUBLIC_KEY'] = old_jwt_sign_public_key
+
+      ENV['REDIS_HOST'] = old_redis_host
+      ENV['REDIS_PORT'] = old_redis_port
+      ENV['REDIS_PASSWORD'] = old_redis_password
     end
 
     let(:current_environment) { 'development' }
@@ -80,6 +93,9 @@ MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANxjO/jH8pHEFjguHy+h43yzR+wl9fW3
 fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
 -----END PUBLIC KEY-----)
     end
+    let(:redis_password) { 'redisPass' }
+    let(:redis_host) { 'redis' }
+    let(:redis_port) { '6379' }
 
     it 'loads the application configuration' do
       expect(described_class.config.database_config.adapter).to eq(adapter)
@@ -93,6 +109,10 @@ fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
       expect(described_class.config.secret.jwt_sign_private_key.to_s.strip).to eq(jwt_sign_private_key)
       expect(described_class.config.secret.jwt_sign_public_key.to_s.strip).to eq(jwt_sign_public_key)
       expect(described_class.config.secret.jwt_sign_algorithm).not_to be_empty
+
+      expect(described_class.config.redis.password).to eq(redis_password)
+      expect(described_class.config.redis.host).to eq(redis_host)
+      expect(described_class.config.redis.port.to_s).to eq(redis_port)
     end
   end
 end

@@ -4,6 +4,7 @@
 * In another terminal bring the app service up by running `docker compose run -it auth-service /bin/sh` and run the migrations `bundle exec rake db:migrate`
 * After that bring up the web service by running `docker compose up auth-service`
 * To bring the REPL run `docker compose run -it auth-service /bin/sh` and inside the container run `bin/console`
+* To run background jobs bring redis up by running `docker compose up redis`
 
 #### Database debugging
 * To run psql inside the docker container run `docker compose run -it database /bin/bash` and enter the command `psql -U arival --dbname arival_development --host database --port 5432`
@@ -33,3 +34,6 @@ When starting the App for the first time
 ### Testing
 * Create test database using `APP_ENV=test bundle exec rake db:create`
 * Migrate the test database using `APP_ENV=test bundle exec rake db:migrate`
+
+## Running background jobs
+* Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers

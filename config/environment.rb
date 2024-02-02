@@ -76,6 +76,12 @@ class App
     setting :port
   end
 
+  setting :redis do
+    setting :password
+    setting :host
+    setting :port
+  end
+
   setting :secret do
     setting(
       :jwt_sign_private_key,
@@ -138,8 +144,16 @@ App.configure do |config|
     config_path: App.config.config_path
   ).load_for(environment: config.environment)
 
+  redis_configuration = ConfigFile.new(
+    file_name: 'redis.yaml.erb',
+    config_path: App.config.config_path
+  ).load_for(environment: config.environment)
+
   App.set_config(
     configurations: database_configurations, config_name: :database_config
+  )
+  App.set_config(
+    configurations: redis_configuration, config_name: :redis
   )
 end
 
