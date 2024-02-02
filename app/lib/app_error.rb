@@ -2,7 +2,7 @@
 
 # A class to abstract errors and give an uniform interface to create,
 # serialize and deserialize error objects
-class AppError < Data.define(:field, :error_messages)
+AppError = Data.define(:field, :error_messages) do
   class << self
     def from_hash(hash)
       hash.map do |field, error_messages|

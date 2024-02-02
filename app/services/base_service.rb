@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
+# Provides a platform to build other service classes
 class BaseService
-  class Result < Data.define(:success, :value, :errors)
+  Result = Data.define(:success, :value, :errors) do
     class << self
       def success(value:)
         new(success: true, value:)

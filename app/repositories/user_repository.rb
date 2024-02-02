@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # Repository for user objects
 

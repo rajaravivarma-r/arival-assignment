@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# User model
 class User < Sequel::Model
   plugin :timestamps, update_on_create: true
 

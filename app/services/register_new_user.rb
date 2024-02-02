@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Use this class to create valid users in the system
+# All the validations are handled here
 class RegisterNewUser < BaseService
   attr_reader :email, :password, :password_verification
 
@@ -10,6 +12,7 @@ class RegisterNewUser < BaseService
   end
 
   def initialize(email:, password:, password_verification:)
+    super()
     @email = email
     @password = password
     @password_verification = password_verification
@@ -19,14 +22,15 @@ class RegisterNewUser < BaseService
     if (validation_result = validate_params!).failure?
       return Result.failure(errors: errors_from_hash(validation_result.errors.to_h))
     end
+
     password_hash = BCrypt::Password.create(password)
 
     user = User.create(
-      email: email,
-      password_hash: password_hash
+      email:,
+      password_hash:
     )
     Result.success(value: user)
-  rescue Sequel::Error, PG::Error => e
+  rescue Sequel::Error, PG::Error
     Result.failure(
       errors: construct_error(field: 'user', error_messages: 'Could not create user')
     )

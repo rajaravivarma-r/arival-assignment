@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Controller to handle new user registration
 module Api
   module V1
+    # Controller to handle new user registration
     class UserRegistrationController < BaseController
       namespace NAMESPACE do
         post '/users' do

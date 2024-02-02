@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module JsonSerializers
+  # Serialize user object and collection of user objects
   class UserSerializer
     attr_reader :user
 
