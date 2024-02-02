@@ -8,7 +8,19 @@ class UserSessionToken
     def issue(user, expires_in_seconds: DEFAULT_EXPIRES_IN)
       expires_at = Time.now.to_i + expires_in_seconds
       payload = { email: user.email, exp: expires_at }
-      SessionToken.new.encode_to_string(payload:)
+      session_token.encode_to_string(payload:)
+    end
+
+    def get_user(token_string)
+      payload = session_token.decode_payload(token_string:).first
+      email = payload['email']
+      User.find(email:)
+    end
+
+    private
+
+    def session_token
+      SessionToken.new
     end
   end
 end

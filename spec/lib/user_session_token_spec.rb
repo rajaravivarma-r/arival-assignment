@@ -22,4 +22,12 @@ RSpec.describe UserSessionToken do
       )
     end
   end
+
+  describe '.get_user' do
+    it 'fetches the user of the token' do
+      token = described_class.issue(user)
+      fetched_user = described_class.get_user(token)
+      expect(user.email).to eq(fetched_user.email)
+    end
+  end
 end
