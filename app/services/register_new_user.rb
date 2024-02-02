@@ -25,7 +25,6 @@ class RegisterNewUser < BaseService
 
     password_hash = BCrypt::Password.create(password)
 
-    require 'byebug'; byebug
     user = User.create(
       email:,
       password_hash:
