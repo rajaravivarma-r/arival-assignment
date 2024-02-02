@@ -5,6 +5,8 @@ module Api
   # Add useful helper methods to this base class, and add common
   # behaviour that all other controllers should have.
   class BaseController < Sinatra::Base
+    include ::ResponseHelper
+
     register Sinatra::Namespace
     NAMESPACE = '/api/v1'
 
@@ -23,18 +25,6 @@ module Api
         error_messages: 'Invalid JSON request'
       )
       failure_json(status: 400, errors: error)
-    end
-
-    def success_json(status:, value:)
-      status(status)
-      { data: value }.to_json
-    end
-
-    def failure_json(status:, errors:)
-      status(status)
-      errors = Array(errors)
-      error_response = { errors: errors.map(&:to_h) }
-      error_response.to_json
     end
   end
 end
