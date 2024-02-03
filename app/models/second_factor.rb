@@ -3,6 +3,10 @@
 # TODO: Store the otp secret in encrypted format
 # Model to handle TOTPs
 class SecondFactor < Sequel::Model
+  extend EncryptableAttributes
+
+  encrypts :otp_secret, to: :otp_secret_cipher
+
   USER_TOTP_ISSUER = "arival-#{App.config.environment}".freeze
   plugin :timestamps, update_on_create: true
 
@@ -30,6 +34,10 @@ class SecondFactor < Sequel::Model
 
       BackupCode.generate_for_second_factor(second_factor)
       second_factor
+    end
+
+    def with_otp_secret(otp_secret)
+      find(otp_secret_cipher: encrypt_and_sign(otp_secret))
     end
   end
 
@@ -70,10 +78,6 @@ class SecondFactor < Sequel::Model
   private
 
   def unique_otp_secret
-    loop do
-      otp_secret = ROTP::Base32.random
-      existing_entry = SecondFactor.find(otp_secret:)
-      return otp_secret if existing_entry.nil?
-    end
+    ROTP::Base32.random
   end
 end

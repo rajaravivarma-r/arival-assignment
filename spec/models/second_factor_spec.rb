@@ -110,20 +110,5 @@ RSpec.describe SecondFactor do
       second_factor = described_class.last
       expect(second_factor.otp_secret).to eq('unique_otp_secret')
     end
-
-    it 'handles setting unique OTP secrets when conflicts occur' do
-      allow(ROTP::Base32).to(
-        receive(:random).and_return('conflict_otp_secret', 'conflict_otp_secret', 'unique_otp_secret')
-      )
-
-      described_class.create(user_id: user.id, enabled: true, otp_secret: 'conflict_otp_secret')
-
-      expect do
-        described_class.create(user_id: (user.id + 1), enabled: true)
-      end.to change(described_class, :count).by(1)
-
-      second_factor = described_class.last
-      expect(second_factor.otp_secret).to eq('unique_otp_secret')
-    end
   end
 end
