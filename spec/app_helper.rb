@@ -4,6 +4,9 @@ require_relative '../config/environments/test'
 
 App.load_app_code!
 
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
+
 spec_support_path = App.config.root_path.join('spec/support')
 
 spec_support_path.join('helpers').glob('**/*.rb').sort.each do |f|
