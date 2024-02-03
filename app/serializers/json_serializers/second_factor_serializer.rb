@@ -21,7 +21,8 @@ module JsonSerializers
         otp_secret: second_factor.otp_secret,
         enabled: second_factor.enabled,
         created_at: second_factor.created_at,
-        updated_at: second_factor.updated_at
+        updated_at: second_factor.updated_at,
+        backup_codes: second_factor.backup_codes.map(&:code).sort
       }
     end
   end
