@@ -37,3 +37,5 @@ gem 'sidekiq'
 gem 'rotp'
 
 gem 'rqrcode'
+
+gem 'httparty'
