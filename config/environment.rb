@@ -103,6 +103,8 @@ class App
       default: OpenSSL::PKey::RSA.new(ENV.fetch('JWT_TOKEN_SIGN_PUBLIC_KEY', nil))
     )
     setting :jwt_sign_algorithm, default: 'RS256'
+
+    setting :data_encryption_key, default: ENV.fetch('DATA_ENCRYPTION_KEY')[0..31]
   end
 
   class << self

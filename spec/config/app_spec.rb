@@ -113,7 +113,7 @@ fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
       expect(described_class.config.secret.jwt_sign_private_key.to_s.strip).to eq(jwt_sign_private_key)
       expect(described_class.config.secret.jwt_sign_public_key.to_s.strip).to eq(jwt_sign_public_key)
       expect(described_class.config.secret.jwt_sign_algorithm).not_to be_empty
-      expect(described_class.config.secret.data_encryption_key).to eq(data_encryption_key)
+      expect(described_class.config.secret.data_encryption_key).to eq(data_encryption_key[0..31])
 
       expect(described_class.config.redis.password).to eq(redis_password)
       expect(described_class.config.redis.host).to eq(redis_host)
