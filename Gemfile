@@ -35,3 +35,5 @@ gem 'jwt'
 gem 'sidekiq'
 
 gem 'rotp'
+
+gem 'rqrcode'
