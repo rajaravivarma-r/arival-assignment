@@ -18,6 +18,7 @@ class RegisterNewUser < BaseService
     @password_verification = password_verification
   end
 
+  # rubocop:disable Metrics/AbcSize
   def call
     if (validation_result = validate_params!).failure?
       return Result.failure(errors: errors_from_hash(validation_result.errors.to_h))
@@ -29,6 +30,7 @@ class RegisterNewUser < BaseService
       email:,
       password_hash:
     )
+    SuccessfulRegistrationMailerJob.perform_async(user.id)
     Result.success(value: user)
   rescue Sequel::UniqueConstraintViolation
     Result.failure(
@@ -39,6 +41,7 @@ class RegisterNewUser < BaseService
       errors: construct_error(field: 'user', error_messages: 'Could not create user')
     )
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
