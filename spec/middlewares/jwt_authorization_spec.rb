@@ -31,11 +31,7 @@ RSpec.describe JWTAuthorization do
 
   let(:email) { 'test@example.com' }
   let(:password) { 'password' }
-  let(:user) do
-    RegisterNewUser.call(
-      email:, password:, password_verification: password
-    ).value
-  end
+  let(:user) { User.create(email:, password:) }
   let(:valid_token) do
     UserSessionToken.issue(user, expires_in_seconds: 60)
   end

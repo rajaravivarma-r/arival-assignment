@@ -18,11 +18,7 @@ RSpec.describe LoginUser do
 
   describe '#call' do
     context 'when user is found and password is valid' do
-      let!(:user) do
-        RegisterNewUser.call(
-          email:, password:, password_verification: password
-        ).value
-      end
+      let!(:user) { User.create(email:, password:) }
 
       it 'returns a successful result' do
         result = described_class.new(email:, password:).call
@@ -40,11 +36,7 @@ RSpec.describe LoginUser do
     end
 
     context 'when password is invalid' do
-      before do
-        RegisterNewUser.call(
-          email:, password:, password_verification: password
-        ).value
-      end
+      before { User.create(email:, password:) }
 
       it 'returns a failure result with an error message' do
         result = described_class.new(email:, password: 'wrong_password').call

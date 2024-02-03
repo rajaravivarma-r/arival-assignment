@@ -4,13 +4,7 @@ require 'app_helper'
 
 RSpec.describe UserSessionToken do
   let(:email) { 'test@example.com' }
-  let!(:user) do
-    RegisterNewUser.call(
-      email:,
-      password: 'samplePass',
-      password_verification: 'samplePass'
-    ).value
-  end
+  let!(:user) { User.create(email:, password: 'samplePass') }
 
   describe '.issue' do
     it 'issues a session token for the user' do

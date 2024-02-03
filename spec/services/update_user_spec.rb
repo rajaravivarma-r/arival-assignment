@@ -5,13 +5,8 @@ require 'app_helper'
 RSpec.describe UpdateUser do
   let(:email) { 'user@example.com' }
   let(:password) { 'password123' }
-  let(:password_verification) { password }
   let(:new_password) { 'newPassword' }
-  let!(:user) do
-    RegisterNewUser.call(
-      email:, password:, password_verification:
-    ).value
-  end
+  let!(:user) { User.create(email:, password:) }
   let(:updated_attributes) { { password: new_password } }
   let(:update_user) { described_class.new(user:, updated_attributes:) }
 
