@@ -20,12 +20,12 @@ Sequel.migration do
     create_table(:second_factors, :ignore_index_errors=>true) do
       primary_key :id
       Integer :user_id, :null=>false
-      String :otp_secret, :text=>true, :null=>false
+      String :otp_secret_cipher, :text=>true, :null=>false
       TrueClass :enabled, :default=>true, :null=>false
       DateTime :created_at, :null=>false
       DateTime :updated_at, :null=>false
       
-      index [:otp_secret], :unique=>true
+      index [:otp_secret_cipher], :name=>:second_factors_otp_secret_index, :unique=>true
       index [:user_id], :unique=>true
     end
     
