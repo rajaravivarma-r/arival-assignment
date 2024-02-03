@@ -9,6 +9,8 @@ class JWTAuthorization
   end
 
   def call(env)
+    return @app.call(env) if skip?(env)
+
     bearer = env.fetch('HTTP_AUTHORIZATION', '').split[1]&.strip
     env[:current_user] = UserSessionToken.get_user(bearer)
     @app.call(env)
@@ -31,6 +33,15 @@ class JWTAuthorization
   end
 
   private
+
+  def skip?(env)
+    # Skip for site URLs
+    %w[REQUEST_URI PATH_INFO].any? do |key|
+      next unless (val = env[key]&.strip)
+
+      val.include?('/site/')
+    end
+  end
 
   def error_response(status:, error_message:)
     [

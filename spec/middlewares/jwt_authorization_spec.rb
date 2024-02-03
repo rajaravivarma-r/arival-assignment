@@ -18,6 +18,11 @@ class AuthorizedController < Sinatra::Base
     status 200
     { success: true }.to_json
   end
+
+  post '/site/path' do
+    status 200
+    { success: true }.to_json
+  end
 end
 
 RSpec.describe JWTAuthorization do
@@ -56,7 +61,7 @@ RSpec.describe JWTAuthorization do
       %i[get post].each do |method|
         send(method, '/test', {}, authorization_header(expired_token))
 
-        response = JSON.parse(last_response.body)
+        response = last_response_json
         expect(last_response.status).to eq(403)
         expect(response['errors']).to include({ 'token' => ['The token has expired.'] })
       end
@@ -68,9 +73,19 @@ RSpec.describe JWTAuthorization do
       %i[get post].each do |method|
         send(method, '/test', {}, {})
 
-        response = JSON.parse(last_response.body)
+        response = last_response_json
         expect(last_response.status).to eq(401)
         expect(response['errors']).to include({ 'token' => ['A token must be passed.'] })
+      end
+    end
+
+    context 'when visiting site url' do
+      it 'returns a 200 Unauthorized response' do
+        post '/site/path', {}, {}
+
+        response = last_response_json
+        expect(last_response.status).to eq(200)
+        expect(response['success']).to be(true)
       end
     end
   end
