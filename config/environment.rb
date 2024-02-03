@@ -5,6 +5,7 @@
 require_relative 'init'
 
 ENV['APP_ENV'] ||= 'development'
+ENV['RACK_ENV'] = ENV.fetch('APP_ENV', nil)
 
 Dotenv.load(".env.#{ENV.fetch('APP_ENV', nil)}")
 Bundler.require(:default, ENV.fetch('APP_ENV', nil))

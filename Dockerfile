@@ -16,4 +16,4 @@ RUN bundle install
 
 COPY . /app
 
-CMD ["bundle", "exec", "puma", "--port", "3000", "--bind", "tcp://0.0.0.0"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
