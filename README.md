@@ -6,14 +6,26 @@
 * To bring the REPL run `docker compose run -it auth-service /bin/sh` and inside the container run `bin/console`
 * To run background jobs bring redis up by running `docker compose up redis`
 
+## Running background jobs
+* Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers
+
 ## Secret management
 * All local environment container specific configurations are stored in `.env.development` and `.env.test` file, to ease development and testing.
 * Secrets like API key to external services are *NOT* added in the .env files. It has to shared via a secured communication channel and stored in `.env.development.local` or `.env.test.local` for local testing purposes. These local .env files are not tracked in git and should never be committed.
-* In *production* the environment variables should be injected using `vault` or other mechanism during deployment.
+* In *production* the environment variables should be injected using `kubernetes vault` or other mechanism during deployment.
 
-#### Database debugging
+## Production
+To deploy the app in production environment:
+    * Set proper mount points for the volumes. Ideally the database will be running in a managed instance.
+    * Inject all secrets as environment variables using `kubernetes vault` or other mechanism.
+
+## Debugging
+### Database debugging
 * To run psql inside the docker container run `docker compose run -it database /bin/bash` and enter the command `psql -U arival --dbname arival_development --host database --port 5432`
 * When prompted for the password enter the password specified in the `POSTGRES_PASSWORD` environment variable in the compose file.
+
+### Redis debugging
+* To inspect redis data, find the container name of the redis instance using `docker ps` and enter the shell environment of that container by running `docker container exec -it <CONTAINER_ID> /bin/sh`.
 
 #### Database management
 * To create a database. This assumes that the default `postgres` database is present which can be accessed using the username and password specified in the database.yaml file.
@@ -47,9 +59,6 @@ When starting the App for the first time
 * Make sure a valid `EMAIL_SENDER` email is set
 * The mailjet credentials can be sourced into the container environment directly
 
-## Running background jobs
-* Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers
-
 ## Linting
 * Run `bundle exec rubocop` or `bundle exec rubocop -A`(!!will autocorrect the files!!) in one of the docker containers
 
@@ -63,3 +72,5 @@ When starting the App for the first time
 - Add the OTP to any authenticator like Authy
 - Login again using `otp` or one of the backup codes
 - Now login will not work without `otp`
+- Disable 2FA and the login will now work without `otp`
+- Enable 2FA again, you will get a new QR code and backup codes
