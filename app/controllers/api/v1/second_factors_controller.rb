@@ -24,7 +24,9 @@ module Api
         put '/two_factors/disable' do
           if (second_factor = current_user.second_factor)
             second_factor.disable!
-            second_factor_json = serializer(second_factor).as_json
+            second_factor_json = serializer(second_factor)
+                                 .as_json
+                                 .except(:otp_secret, :backup_codes)
             success_json(status: 200, value: second_factor_json)
           else
             error = AppError.new(field: 'second_factor', error_messages: 'two factor authentication is not enabled')

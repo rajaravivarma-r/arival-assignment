@@ -52,3 +52,14 @@ When starting the App for the first time
 
 ## Linting
 * Run `bundle exec rubocop` or `bundle exec rubocop -A`(!!will autocorrect the files!!) in one of the docker containers
+
+## Testing
+### Register an user
+- Send body in this format `{"email":"youremail@domain.com","password":"samplePassword","password_verification":"samplePassword"}`
+- Login by posting the JSON `{"email":"youremail@domain.com","password":"samplePassword"}`
+- Store the token from the last response
+- Enable 2FA
+- Look for QR code url in the response and open it
+- Add the OTP to any authenticator like Authy
+- Login again using `otp` or one of the backup codes
+- Now login will not work without `otp`

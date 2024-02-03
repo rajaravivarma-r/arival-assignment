@@ -68,7 +68,6 @@ RSpec.describe Api::V1::SecondFactorsController do
         created_second_factor = current_user.second_factor
         expected_data = {
           'id' => created_second_factor.id,
-          'otp_secret' => created_second_factor.otp_secret,
           'created_at' => anything,
           'enabled' => false,
           'updated_at' => anything
