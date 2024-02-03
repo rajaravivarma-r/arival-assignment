@@ -4,6 +4,8 @@
 class User < Sequel::Model
   plugin :timestamps, update_on_create: true
 
+  one_to_one :second_factor
+
   # Instance method to verify a password
   def valid_password?(password)
     BCrypt::Password.new(password_hash) == password

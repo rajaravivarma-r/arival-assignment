@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Store the otp secret in encrypted format
 # Model to handle TOTPs
 class SecondFactor < Sequel::Model
   plugin :timestamps, update_on_create: true
@@ -12,6 +13,14 @@ class SecondFactor < Sequel::Model
     def enable_for_user(user)
       create(user_id: user.id, enabled: true)
     end
+  end
+
+  def enabled?
+    enabled
+  end
+
+  def disable!
+    update(enabled: false)
   end
 
   private
