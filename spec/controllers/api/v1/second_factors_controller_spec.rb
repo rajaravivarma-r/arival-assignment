@@ -26,6 +26,9 @@ RSpec.describe Api::V1::SecondFactorsController do
         data = last_response_json['data']
         expect(data).to include(expected_data)
         expect(data['backup_codes'].sort).to eq(backup_codes)
+        expect(data['qr_code']).not_to be_empty
+        expect(data.dig('qr_code', 'base64')).not_to be_empty
+        expect(data.dig('qr_code', 'url')).not_to be_empty
       end
     end
 
@@ -72,7 +75,10 @@ RSpec.describe Api::V1::SecondFactorsController do
           'enabled' => false,
           'updated_at' => anything
         }
-        expect(last_response_json['data']).to include(expected_data)
+        data = last_response_json['data']
+        expect(data).to include(expected_data)
+        expect(data.dig('qr_code', 'base64')).to be_nil
+        expect(data.dig('qr_code', 'url')).to be_nil
       end
     end
 

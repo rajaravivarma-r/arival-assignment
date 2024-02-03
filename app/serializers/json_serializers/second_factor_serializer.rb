@@ -16,7 +16,6 @@ module JsonSerializers
       @request = request
     end
 
-    # rubocop:disable Metrics/AbcSize
     def as_json(attributes = {})
       data = {
         id: second_factor.id,
@@ -32,7 +31,6 @@ module JsonSerializers
       end
       data
     end
-    # rubocop:enable Metrics/AbcSize
 
     private
 
