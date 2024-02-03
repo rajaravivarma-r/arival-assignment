@@ -13,7 +13,6 @@ RSpec.describe Api::V1::SecondFactorsController do
     context 'when enabling for the first time' do
       it 'enables two factors for the user and returns a serialized response' do
         post '/api/v1/two_factors/enable', {}, authorization_header(valid_token)
-
         expect(last_response.status).to eq(201)
         created_second_factor = current_user.second_factor
         backup_codes = created_second_factor.backup_codes.map(&:code).sort

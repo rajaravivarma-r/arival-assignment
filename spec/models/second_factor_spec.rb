@@ -44,6 +44,27 @@ RSpec.describe SecondFactor do
     end
   end
 
+  describe '#provisioning_uri' do
+    let(:user) { User.create(email: 'test@example.com', password: 'password') }
+    let(:second_factor) { described_class.enable_for_user(user) }
+
+    context 'when enabled' do
+      it 'returns the provisioning_uri' do
+        expect(second_factor.provisioning_uri).not_to be_empty
+      end
+    end
+
+    context 'when not enabled' do
+      before do
+        second_factor.disable!
+      end
+
+      it 'returns nil' do
+        expect(second_factor.provisioning_uri).to be_nil
+      end
+    end
+  end
+
   describe '#before_create' do
     it 'sets a unique OTP secret before creating' do
       allow(ROTP::Base32).to receive(:random).and_return('unique_otp_secret')

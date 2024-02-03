@@ -30,7 +30,17 @@ class SecondFactor < Sequel::Model
 
   def valid_user_otp?(otp)
     totp = ROTP::TOTP.new(otp_secret, issuer: USER_TOTP_ISSUER)
+
     !!totp.verify(otp.to_s)
+  end
+
+  def provisioning_uri
+    return nil unless enabled?
+
+    email = User.find(id: user_id).email
+
+    totp = ROTP::TOTP.new(otp_secret, issuer: USER_TOTP_ISSUER)
+    totp.provisioning_uri(email)
   end
 
   private
