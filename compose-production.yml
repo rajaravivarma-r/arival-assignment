@@ -12,7 +12,7 @@ services:
   database:
     image: postgres:16.1
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - ./tmp/db:/var/lib/postgresql/data # Configure this according to the production environment
     ports:
       - "5432:5432"
     environment:
@@ -26,4 +26,4 @@ services:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
-      - ./tmp/redis:/data
+      - ./tmp/redis:/data # Configure this according to the prod envir
