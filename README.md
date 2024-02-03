@@ -6,6 +6,11 @@
 * To bring the REPL run `docker compose run -it auth-service /bin/sh` and inside the container run `bin/console`
 * To run background jobs bring redis up by running `docker compose up redis`
 
+## Secret management
+* All local environment container specific configurations are stored in `.env.development` and `.env.test` file, to ease development and testing.
+* Secrets like API key to external services are *NOT* added in the .env files. It has to shared via a secured communication channel and stored in `.env.development.local` or `.env.test.local` for local testing purposes. These local .env files are not tracked in git and should never be committed.
+* In *production* the environment variables should be injected using `vault` or other mechanism during deployment.
+
 #### Database debugging
 * To run psql inside the docker container run `docker compose run -it database /bin/bash` and enter the command `psql -U arival --dbname arival_development --host database --port 5432`
 * When prompted for the password enter the password specified in the `POSTGRES_PASSWORD` environment variable in the compose file.
@@ -35,6 +40,12 @@ When starting the App for the first time
 * Create test database using `APP_ENV=test bundle exec rake db:create`
 * Migrate the test database using `APP_ENV=test bundle exec rake db:migrate`
 * Run `bundle exec rspec` in one of the docker containers
+
+## Mailing
+* Mailing functionality uses mailjet API. The API_KEY and SECRET_KEY pertaining to mailjet are not committed to the repo.
+* If you have your own personal mailjet credentials then store them in `.env.development.local` and start the service for development purposes
+* Make sure a valid `EMAIL_SENDER` email is set
+* The mailjet credentials can be sourced into the container environment directly
 
 ## Running background jobs
 * Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers
