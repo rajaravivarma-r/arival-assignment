@@ -9,13 +9,22 @@
 ## Running background jobs
 * Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers
 
-## Secret management
+## Security
+* User passwords are encrypted using `bcrypt` and stored
+* TOTP secrets are encrypted using a symmetric key and stored
+* Backup codes are encrypted using a symmetric key and stored
+* The key used to encrypte the data is 32 bytes long
+* The encrypted data is also signed and the salt is stored as a part of the encrypted data. So even if there is a miniscule chance of two users having same TOTP secret or backup codes will not be revealed in case of database leak.
+
+### Secret management
 * All local environment container specific configurations are stored in `.env.development` and `.env.test` file, to ease development and testing.
 * Secrets like API key to external services are *NOT* added in the .env files. It has to shared via a secured communication channel and stored in `.env.development.local` or `.env.test.local` for local testing purposes. These local .env files are not tracked in git and should never be committed.
 * In *production* the environment variables should be injected using `kubernetes vault` or other mechanism during deployment.
 
 ## Production
 To deploy the app in production environment:
+    * Set `APP_ENV` and `RACK_ENV` to `production`
+    * Use `docker compose -f compose.yml -f compose-production.yml up` to run in production environment
     * Set proper mount points for the volumes. Ideally the database will be running in a managed instance.
     * Inject all secrets as environment variables using `kubernetes vault` or other mechanism.
 
@@ -58,6 +67,7 @@ When starting the App for the first time
 * If you have your own personal mailjet credentials then store them in `.env.development.local` and start the service for development purposes
 * Make sure a valid `EMAIL_SENDER` email is set
 * The mailjet credentials can be sourced into the container environment directly
+**NOTE**: I couldn't test it as my mailjet account was suspended.
 
 ## Linting
 * Run `bundle exec rubocop` or `bundle exec rubocop -A`(!!will autocorrect the files!!) in one of the docker containers
