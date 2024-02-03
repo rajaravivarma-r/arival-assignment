@@ -4,6 +4,10 @@
 module ResponseHelper
   module Header
     CONTENT_TYPE = 'Content-Type'
+
+    def self.json_content_type
+      { CONTENT_TYPE => ContentType::APPLICATION_JSON }
+    end
   end
 
   module ContentType

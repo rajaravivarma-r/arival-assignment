@@ -28,7 +28,7 @@ module Api
         field: 'request',
         error_messages: 'Invalid JSON request'
       )
-      failure_json(status: 400, errors: error)
+      halt(400, Header.json_content_type, failure_json_body(error))
     end
   end
 end
