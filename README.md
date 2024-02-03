@@ -34,6 +34,10 @@ When starting the App for the first time
 ### Testing
 * Create test database using `APP_ENV=test bundle exec rake db:create`
 * Migrate the test database using `APP_ENV=test bundle exec rake db:migrate`
+* Run `bundle exec rspec` in one of the docker containers
 
 ## Running background jobs
 * Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers
+
+## Linting
+* Run `bundle exec rubocop` or `bundle exec rubocop -A`(!!will autocorrect the files!!) in one of the docker containers
