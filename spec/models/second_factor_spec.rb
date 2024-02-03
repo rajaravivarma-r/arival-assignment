@@ -19,6 +19,28 @@ RSpec.describe SecondFactor do
       expect(second_factor.otp_secret).not_to be_nil
       expect(second_factor.backup_codes).not_to be_empty
     end
+
+    context 'when re-enabling' do
+      let!(:second_factor) do
+        SecondFactor.create(user_id: user.id, enabled: false)
+      end
+
+      it 'creates a new SecondFactor for the user' do
+        old_secret = second_factor.otp_secret
+        expect(second_factor).not_to be_enabled
+        expect(second_factor.backup_codes.size).to eq(0)
+        expect do
+          described_class.enable_for_user(user)
+        end.to change(described_class, :count).by(0)
+
+        second_factor = described_class.last
+        expect(second_factor.user_id).to eq(user.id)
+        expect(second_factor).to be_enabled
+        expect(second_factor.otp_secret).not_to be_nil
+        expect(second_factor.otp_secret).not_to eq(old_secret)
+        expect(second_factor.backup_codes).not_to be_empty
+      end
+    end
   end
 
   describe '#valid_user_otp?' do

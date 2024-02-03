@@ -14,7 +14,20 @@ class SecondFactor < Sequel::Model
 
   class << self
     def enable_for_user(user)
-      second_factor = create(user_id: user.id, enabled: true)
+      existing = true
+      second_factor = find_or_create(user_id: user.id) do |sf|
+        existing = false
+        sf.enabled = true
+      end
+
+      return second_factor if existing && second_factor.enabled?
+
+      if second_factor.disabled?
+        second_factor.set_unique_otp_secret
+        second_factor.enabled = true
+        second_factor.save
+      end
+
       BackupCode.generate_for_second_factor(second_factor)
       second_factor
     end
@@ -22,6 +35,10 @@ class SecondFactor < Sequel::Model
 
   def enabled?
     enabled
+  end
+
+  def disabled?
+    !enabled?
   end
 
   def disable!
@@ -46,15 +63,18 @@ class SecondFactor < Sequel::Model
     totp.provisioning_uri(email)
   end
 
+  def set_unique_otp_secret
+    self.otp_secret = unique_otp_secret
+  end
+
   private
 
-  def set_unique_otp_secret
+  def unique_otp_secret
     loop do
       otp_secret = ROTP::Base32.random
       existing_entry = SecondFactor.find(otp_secret:)
       if existing_entry.nil?
-        self.otp_secret = otp_secret
-        break
+        return otp_secret
       end
     end
   end
