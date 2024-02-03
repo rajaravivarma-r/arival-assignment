@@ -9,7 +9,8 @@ module Api
       namespace NAMESPACE do
         post '/two_factors/enable' do
           if (second_factor = current_user.second_factor)&.enabled?
-            second_factor_json = serializer(second_factor).as_json
+            second_factor_json = serializer(second_factor)
+                                 .as_json.except(:backup_codes)
             success_json(status: 200, value: second_factor_json)
           else
             second_factor = SecondFactor.enable_for_user(current_user)
