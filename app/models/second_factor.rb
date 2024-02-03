@@ -35,10 +35,6 @@ class SecondFactor < Sequel::Model
       BackupCode.generate_for_second_factor(second_factor)
       second_factor
     end
-
-    def with_otp_secret(otp_secret)
-      find(otp_secret_cipher: encrypt_and_sign(otp_secret))
-    end
   end
 
   def enabled?

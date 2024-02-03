@@ -2,6 +2,9 @@
 
 # User model
 class BackupCode < Sequel::Model
+  extend EncryptableAttributes
+  encrypts :code, to: :code_cipher
+
   DEFAULT_NO_OF_BACKUP_CODES = 10
 
   plugin :timestamps, update_on_create: true
@@ -24,11 +27,12 @@ class BackupCode < Sequel::Model
     end
 
     def utilize(second_factor:, code:)
-      backup_code = find(second_factor:, code:, utilized: false)
-      return false unless backup_code
+      backup_codes = where(second_factor:, utilized: false)
+      matching_backup_code = backup_codes.detect { |bc| bc.code == code }
+      return false unless matching_backup_code
 
-      backup_code.utilize!
-      backup_code
+      matching_backup_code.utilize!
+      matching_backup_code
     end
   end
 
@@ -43,18 +47,6 @@ class BackupCode < Sequel::Model
   private
 
   def generate_code
-    # TODO: Add database constraint => index(second_factor_id, code) to be unique
-    loop do
-      code = generate_random_code
-      existing_entry = BackupCode.find(code:, second_factor_id:)
-      if existing_entry.nil?
-        self.code = code
-        break
-      end
-    end
-  end
-
-  def generate_random_code
-    rand(10_000_000..99_999_999).to_s
+    self.code = SecureRandom.uuid
   end
 end

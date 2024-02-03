@@ -71,7 +71,7 @@ RSpec.describe BackupCode do
     it 'generates a random code before creating' do
       backup_code = described_class.create(second_factor_id: 1)
 
-      expect(backup_code.code.size).to eq(8)
+      expect(backup_code.code.size).to be > 10
     end
   end
 

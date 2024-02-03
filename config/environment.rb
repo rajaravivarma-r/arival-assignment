@@ -137,6 +137,7 @@ class App
       # Require the code in order where it is a dependency for other code
       App.config.root_path.glob('app/helpers/**/*.rb').sort.each { |f| require f }
       App.config.root_path.glob('app/middlewares/**/*.rb').sort.each { |f| require f }
+      App.config.root_path.glob('app/models/concerns/**/*.rb').sort.each { |f| require f }
       App.config.root_path.glob('app/**/*.rb').sort.each { |f| require f }
     end
 
