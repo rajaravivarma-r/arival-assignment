@@ -20,7 +20,7 @@ class QRCode
               <img src="#{as_base64_encoded}" alt="#{provisioning_uri}" />
             </div>
           </body>
-        </html>).squeeze.strip
+        </html>).strip
   end
 
   def as_base64_encoded
