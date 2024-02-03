@@ -82,6 +82,15 @@ class App
     setting :port
   end
 
+  setting :mailjet do
+    setting :api_key, default: ENV.fetch('MAILJET_API_KEY', nil)
+    setting :secret_key, default: ENV.fetch('MAILJET_SECRET_KEY', nil)
+  end
+
+  setting :mailer do
+    setting :from, default: ENV.fetch('EMAIL_SENDER', nil)
+  end
+
   setting :secret do
     setting(
       :jwt_sign_private_key,

@@ -31,45 +31,43 @@ RSpec.describe App do
     end
   end
 
+  def with_new_values(env_vars)
+    old_env_vars = {}
+    env_vars.each do |var_name, var_value|
+      old_env_vars[var_name] = ENV.fetch(var_name, nil)
+      ENV[var_name] = var_value
+    end
+    yield
+  ensure
+    old_env_vars.each do |var_name, old_val|
+      ENV[var_name] = old_val
+    end
+  end
+
   describe 'application configurations' do
     around do |example|
       old_environment = described_class.config.environment
       described_class.config.environment = current_environment
-
-      old_database = ENV.fetch('DATABASE_NAME', nil)
-      old_username = ENV.fetch('DATABASE_USERNAME', nil)
-      old_password = ENV.fetch('DATABASE_PASSWORD', nil)
-      old_jwt_sign_private_key = ENV.fetch('JWT_TOKEN_SIGN_PRIVATE_KEY', nil)
-      old_jwt_sign_public_key = ENV.fetch('JWT_TOKEN_SIGN_PUBLIC_KEY', nil)
-
-      old_redis_host = ENV.fetch('REDIS_HOST', nil)
-      old_redis_port = ENV.fetch('REDIS_PORT', nil)
-      old_redis_password = ENV.fetch('REDIS_PASSWORD', nil)
-
-      ENV['DATABASE_NAME'] = database
-      ENV['DATABASE_USERNAME'] = username
-      ENV['DATABASE_PASSWORD'] = password
-      ENV['JWT_TOKEN_SIGN_PRIVATE_KEY'] = jwt_sign_private_key
-      ENV['JWT_TOKEN_SIGN_PUBLIC_KEY'] = jwt_sign_public_key
-
-      ENV['REDIS_HOST'] = redis_host
-      ENV['REDIS_PORT'] = redis_port
-      ENV['REDIS_PASSWORD'] = redis_password
-
-      # Reload for every example to reflect the ENV changes
-      load described_class.config.config_path.join('environment.rb')
-      example.run
+      new_env_vars = {
+        'DATABASE_NAME' => database,
+        'DATABASE_USERNAME' => username,
+        'DATABASE_PASSWORD' => password,
+        'JWT_TOKEN_SIGN_PRIVATE_KEY' => jwt_sign_private_key,
+        'JWT_TOKEN_SIGN_PUBLIC_KEY' => jwt_sign_public_key,
+        'REDIS_HOST' => redis_host,
+        'REDIS_PORT' => redis_port,
+        'REDIS_PASSWORD' => redis_password,
+        'EMAIL_SENDER' => email_sender,
+        'MAILJET_API_KEY' => mailjet_api_key,
+        'MAILJET_SECRET_KEY' => mailjet_secret_key
+      }
+      with_new_values(new_env_vars) do
+        # Reload for every example to reflect the ENV changes
+        load described_class.config.config_path.join('environment.rb')
+        example.run
+      end
     ensure
       described_class.config.environment = old_environment
-      ENV['DATABASE_NAME'] = old_database
-      ENV['DATABASE_USERNAME'] = old_username
-      ENV['DATABASE_PASSWORD'] = old_password
-      ENV['JWT_TOKEN_SIGN_PRIVATE_KEY'] = old_jwt_sign_private_key
-      ENV['JWT_TOKEN_SIGN_PUBLIC_KEY'] = old_jwt_sign_public_key
-
-      ENV['REDIS_HOST'] = old_redis_host
-      ENV['REDIS_PORT'] = old_redis_port
-      ENV['REDIS_PASSWORD'] = old_redis_password
       load described_class.config.config_path.join('environment.rb')
     end
 
@@ -97,6 +95,9 @@ fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
     let(:redis_password) { 'redisPass' }
     let(:redis_host) { 'redis' }
     let(:redis_port) { '6379' }
+    let(:email_sender) { 'admin@arival.com' }
+    let(:mailjet_api_key) { 'mailJetApiKey' }
+    let(:mailjet_secret_key) { 'mailJetSecretKey' }
 
     it 'loads the application configuration' do
       expect(described_class.config.database_config.adapter).to eq(adapter)
@@ -114,6 +115,10 @@ fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
       expect(described_class.config.redis.password).to eq(redis_password)
       expect(described_class.config.redis.host).to eq(redis_host)
       expect(described_class.config.redis.port.to_s).to eq(redis_port)
+
+      expect(described_class.config.mailer.from).to eq(email_sender)
+      expect(described_class.config.mailjet.api_key).to eq(mailjet_api_key)
+      expect(described_class.config.mailjet.secret_key).to eq(mailjet_secret_key)
     end
   end
 end
