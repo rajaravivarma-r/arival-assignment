@@ -21,7 +21,8 @@ class LoginUserWithOtp < BaseService
 
   def call
     second_factor = verified_user.second_factor
-    if second_factor.valid_user_otp?(otp)
+    if second_factor.valid_user_otp?(otp) ||
+       BackupCode.utilize(second_factor:, code: otp)
       Result.success(value: verified_user)
     else
       error = construct_error(field: 'otp', error_messages: 'invalid otp')
