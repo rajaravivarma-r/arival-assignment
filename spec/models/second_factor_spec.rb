@@ -65,6 +65,20 @@ RSpec.describe SecondFactor do
     end
   end
 
+  describe '#disable!' do
+    let(:user) { User.create(email: 'test@example.com', password: 'password') }
+    let!(:second_factor) { described_class.enable_for_user(user) }
+
+    it 'disables and removes all associated backup codes' do
+      expect(second_factor).to be_enabled
+      expect(second_factor.backup_codes.size).to eq(10)
+      second_factor.disable!
+
+      expect(second_factor.reload).not_to be_enabled
+      expect(second_factor.backup_codes.size).to eq(0)
+    end
+  end
+
   describe '#before_create' do
     it 'sets a unique OTP secret before creating' do
       allow(ROTP::Base32).to receive(:random).and_return('unique_otp_secret')

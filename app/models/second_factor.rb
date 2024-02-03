@@ -25,7 +25,10 @@ class SecondFactor < Sequel::Model
   end
 
   def disable!
-    update(enabled: false)
+    SecondFactor.db.transaction do
+      update(enabled: false)
+      backup_codes.each(&:destroy)
+    end
   end
 
   def valid_user_otp?(otp)
