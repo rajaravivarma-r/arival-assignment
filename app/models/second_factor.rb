@@ -5,13 +5,17 @@
 class SecondFactor < Sequel::Model
   plugin :timestamps, update_on_create: true
 
+  one_to_many :backup_codes
+
   def before_create
     set_unique_otp_secret
   end
 
   class << self
     def enable_for_user(user)
-      create(user_id: user.id, enabled: true)
+      second_factor = create(user_id: user.id, enabled: true)
+      BackupCode.generate_for_second_factor(second_factor)
+      second_factor
     end
   end
 

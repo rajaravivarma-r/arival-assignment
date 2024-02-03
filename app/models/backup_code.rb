@@ -26,7 +26,15 @@ class BackupCode < Sequel::Model
   private
 
   def generate_code
-    self.code = generate_random_code
+    # TODO: Add database constraint => index(second_factor_id, code) to be unique
+    loop do
+      code = generate_random_code
+      existing_entry = BackupCode.find(code:, second_factor_id:)
+      if existing_entry.nil?
+        self.code = code
+        break
+      end
+    end
   end
 
   def generate_random_code

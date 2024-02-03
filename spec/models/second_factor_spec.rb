@@ -17,6 +17,7 @@ RSpec.describe SecondFactor do
       expect(second_factor.user_id).to eq(user.id)
       expect(second_factor.enabled).to be(true)
       expect(second_factor.otp_secret).not_to be_nil
+      expect(second_factor.backup_codes).not_to be_empty
     end
   end
 
