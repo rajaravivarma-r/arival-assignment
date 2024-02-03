@@ -80,6 +80,7 @@ class App
     setting :password
     setting :host
     setting :port
+    setting :database, default: 0
   end
 
   setting :mailjet do

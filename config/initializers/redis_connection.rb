@@ -14,7 +14,7 @@ class RedisConnection
     @password = password
   end
 
-  def url(database: 0)
+  def url(database: App.config.redis.database)
     "redis://#{password}@#{host}:#{port}/#{database}"
   end
 

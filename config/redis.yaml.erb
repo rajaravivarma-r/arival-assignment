@@ -2,14 +2,16 @@ development:
   host: <%= ENV['REDIS_HOST'] %>
   port: <%= ENV['REDIS_PORT'] %>
   password: <%= ENV['REDIS_PASSWORD'] %>
+  database: 0
 
 test:
   host: <%= ENV['REDIS_HOST'] %>
   port: <%= ENV['REDIS_PORT'] %>
   password: <%= ENV['REDIS_PASSWORD'] %>
+  database: 1
 
 production:
   host: <%= ENV['REDIS_HOST'] %>
   port: <%= ENV['REDIS_PORT'] %>
   password: <%= ENV['REDIS_PASSWORD'] %>
-
+  database: 2
