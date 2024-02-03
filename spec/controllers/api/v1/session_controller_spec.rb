@@ -16,14 +16,7 @@ RSpec.describe Api::V1::SessionController do
       password: 'invalid_password'
     }
   end
-
-  before do
-    RegisterNewUser.call(
-      email:,
-      password:,
-      password_verification: password
-    ).value
-  end
+  let!(:user) { User.create(email:, password:) }
 
   describe 'POST /login' do
     context 'when valid email and password are provided' do
@@ -33,7 +26,7 @@ RSpec.describe Api::V1::SessionController do
         expect(last_response.status).to eq(200)
 
         response_body = JSON.parse(last_response.body)
-        expect(response_body.dig('data', 'token')).not_to be_nil
+        expect(response_body.dig('data', 'token').to_s.strip).not_to be_empty
       end
     end
 
@@ -47,6 +40,68 @@ RSpec.describe Api::V1::SessionController do
         expect(response_body['errors']).to(
           include({ 'user' => ['invalid password'] })
         )
+      end
+    end
+
+    context 'when two factor authentication is enabled' do
+      let(:second_factor) { SecondFactor.enable_for_user(user) }
+      let(:totp) do
+        ROTP::TOTP.new(second_factor.otp_secret, issuer: SecondFactor::USER_TOTP_ISSUER)
+      end
+      let(:otp) { totp.now }
+      let(:valid_params) { { email:, password:, otp: } }
+
+      context 'when a valid otp is passed' do
+        it 'returns a success response' do
+          json_post '/api/v1/login', valid_params
+
+          expect(last_response.status).to eq(200)
+
+          response_body = last_response_json
+          expect(response_body.dig('data', 'token').strip).not_to be_empty
+        end
+      end
+
+      context 'when an invalid otp is passed' do
+        it 'returns a failure response' do
+          json_post '/api/v1/login', valid_params.merge(otp: '12345678')
+
+          expect(last_response.status).to eq(401)
+
+          response_body = last_response_json
+          expect(response_body['errors']).to(
+            include({ 'otp' => ['invalid otp'] })
+          )
+        end
+      end
+
+      context 'when a valid backup code is passed' do
+        let(:backup_code) { second_factor.backup_codes.first }
+
+        it 'returns a success response' do
+          json_post '/api/v1/login', valid_params.merge(otp: backup_code.code)
+
+          expect(last_response.status).to eq(200)
+
+          response_body = last_response_json
+          expect(response_body.dig('data', 'token').strip).not_to be_empty
+        end
+      end
+
+      context 'when a utilized backup code is passed' do
+        let(:backup_code) { second_factor.backup_codes.first }
+
+        it 'returns a failure response' do
+          backup_code.utilize!
+          json_post '/api/v1/login', valid_params.merge(otp: backup_code.code)
+
+          expect(last_response.status).to eq(401)
+
+          response_body = last_response_json
+          expect(response_body['errors']).to(
+            include({ 'otp' => ['invalid otp'] })
+          )
+        end
       end
     end
   end

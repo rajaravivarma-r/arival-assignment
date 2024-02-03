@@ -2,6 +2,7 @@
 
 # Set of helper functions to send uniform responses
 module ResponseHelper
+  # Header name constants
   module Header
     CONTENT_TYPE = 'Content-Type'
 
@@ -10,6 +11,7 @@ module ResponseHelper
     end
   end
 
+  # Header value constants
   module ContentType
     APPLICATION_JSON = 'application/json'
   end

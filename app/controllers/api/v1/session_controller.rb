@@ -6,7 +6,7 @@ module Api
     class SessionController < BaseController
       namespace NAMESPACE do
         post '/login' do
-          result = LoginUser.call(
+          result = LoginStrategy.execute(
             **json_request_body.transform_keys(&:to_sym)
           )
           if result.success?
