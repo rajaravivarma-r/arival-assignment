@@ -39,3 +39,5 @@ gem 'rotp', '~> 6.3'
 gem 'rqrcode', '~> 2.2'
 
 gem 'httparty', '~> 0.21'
+
+gem 'activesupport', '~> 7.1'

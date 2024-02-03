@@ -59,7 +59,8 @@ RSpec.describe App do
         'REDIS_PASSWORD' => redis_password,
         'EMAIL_SENDER' => email_sender,
         'MAILJET_API_KEY' => mailjet_api_key,
-        'MAILJET_SECRET_KEY' => mailjet_secret_key
+        'MAILJET_SECRET_KEY' => mailjet_secret_key,
+        'DATA_ENCRYPTION_KEY' => data_encryption_key
       }
       with_new_values(new_env_vars) do
         # Reload for every example to reflect the ENV changes
@@ -98,6 +99,7 @@ fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
     let(:email_sender) { 'admin@arival.com' }
     let(:mailjet_api_key) { 'mailJetApiKey' }
     let(:mailjet_secret_key) { 'mailJetSecretKey' }
+    let(:data_encryption_key) { '24688fcfa3c7615302546209948d3ba6f763704b9a47a56f6c4479b603779623' }
 
     it 'loads the application configuration' do
       expect(described_class.config.database_config.adapter).to eq(adapter)
@@ -111,6 +113,7 @@ fCO3lq4hJqqc389CwjwpwIc64RGaNzCe2c7B5NaNjKYosXlYt25q2N8CAwEAAQ==
       expect(described_class.config.secret.jwt_sign_private_key.to_s.strip).to eq(jwt_sign_private_key)
       expect(described_class.config.secret.jwt_sign_public_key.to_s.strip).to eq(jwt_sign_public_key)
       expect(described_class.config.secret.jwt_sign_algorithm).not_to be_empty
+      expect(described_class.config.secret.data_encryption_key).to eq(data_encryption_key)
 
       expect(described_class.config.redis.password).to eq(redis_password)
       expect(described_class.config.redis.host).to eq(redis_host)
