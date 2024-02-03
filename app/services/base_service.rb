@@ -20,6 +20,10 @@ class BaseService
     def success?
       success
     end
+
+    def failure?
+      !success?
+    end
   end
 
   private
