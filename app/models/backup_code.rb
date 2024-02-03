@@ -22,6 +22,14 @@ class BackupCode < Sequel::Model
         create(second_factor_id: second_factor.id)
       end
     end
+
+    def utilize(second_factor:, code:)
+      backup_code = find(second_factor:, code:, utilized: false)
+      return false unless backup_code
+
+      backup_code.utilize!
+      backup_code
+    end
   end
 
   def utilize!

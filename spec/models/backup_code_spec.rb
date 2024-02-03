@@ -33,6 +33,40 @@ RSpec.describe BackupCode do
     end
   end
 
+  describe '.utilize' do
+    let(:second_factor) { SecondFactor.create(user_id: 1) }
+    let!(:backup_codes) do
+      2.times.map do
+        described_class.create(second_factor:)
+      end
+    end
+
+    context 'when an unutilized code is submitted' do
+      it 'returns truthy' do
+        backup_code = backup_codes.first
+        code = backup_code.code
+        expect(described_class.utilize(second_factor:, code:)).to be_truthy
+      end
+    end
+
+    context 'when an utilized code is submitted' do
+      it 'returns false' do
+        backup_code = backup_codes.first
+        code = backup_code.code
+        backup_code.utilize!
+        expect(described_class.utilize(second_factor:, code:)).to be_falsey
+      end
+    end
+
+    context 'when an invalid code is submitted' do
+      it 'returns false' do
+        backup_code = backup_codes.first
+        code = "#{backup_code.code}rand"
+        expect(described_class.utilize(second_factor:, code:)).to be_falsey
+      end
+    end
+  end
+
   describe '#before_create' do
     it 'generates a random code before creating' do
       backup_code = described_class.create(second_factor_id: 1)
