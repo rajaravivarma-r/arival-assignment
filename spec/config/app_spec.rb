@@ -60,6 +60,7 @@ RSpec.describe App do
       load described_class.config.config_path.join('environment.rb')
       example.run
 
+    ensure
       described_class.config.environment = old_environment
       ENV['DATABASE_NAME'] = old_database
       ENV['DATABASE_USERNAME'] = old_username
@@ -70,6 +71,7 @@ RSpec.describe App do
       ENV['REDIS_HOST'] = old_redis_host
       ENV['REDIS_PORT'] = old_redis_port
       ENV['REDIS_PASSWORD'] = old_redis_password
+      load described_class.config.config_path.join('environment.rb')
     end
 
     let(:current_environment) { 'development' }
