@@ -6,9 +6,14 @@ class User < Sequel::Model
 
   one_to_one :second_factor
 
-  # Instance method to verify a password
   def valid_password?(password)
     BCrypt::Password.new(password_hash) == password
+  end
+
+  def two_factor_authentication_enabled?
+    return false if second_factor.nil?
+
+    second_factor.enabled?
   end
 
   def password=(new_password)
