@@ -21,6 +21,29 @@ RSpec.describe SecondFactor do
     end
   end
 
+  describe '#valid_user_otp?' do
+    let(:totp) do
+      ROTP::TOTP.new(second_factor.otp_secret, issuer: SecondFactor::USER_TOTP_ISSUER)
+    end
+    let(:second_factor) { described_class.create(user_id: 1) }
+
+    context 'when the otp is valid' do
+      let(:otp) { totp.now }
+
+      it 'returns true' do
+        # TODO: May be use Timcop.freeze to make sure the otp does not expire
+        expect(second_factor.valid_user_otp?(otp)).to be(true)
+      end
+    end
+
+    context 'when the otp is not valid' do
+      it 'returns false' do
+        otp = '5739483'
+        expect(second_factor.valid_user_otp?(otp)).to be(false)
+      end
+    end
+  end
+
   describe '#before_create' do
     it 'sets a unique OTP secret before creating' do
       allow(ROTP::Base32).to receive(:random).and_return('unique_otp_secret')

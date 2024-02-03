@@ -3,6 +3,7 @@
 # TODO: Store the otp secret in encrypted format
 # Model to handle TOTPs
 class SecondFactor < Sequel::Model
+  USER_TOTP_ISSUER = "arival-#{App.config.environment}".freeze
   plugin :timestamps, update_on_create: true
 
   one_to_many :backup_codes
@@ -25,6 +26,11 @@ class SecondFactor < Sequel::Model
 
   def disable!
     update(enabled: false)
+  end
+
+  def valid_user_otp?(otp)
+    totp = ROTP::TOTP.new(otp_secret, issuer: USER_TOTP_ISSUER)
+    !!totp.verify(otp.to_s)
   end
 
   private
