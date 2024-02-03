@@ -10,6 +10,8 @@ class AppContainer < Sinatra::Base
   use Api::V1::UserRegistrationController
   use Api::V1::SessionController
   use Api::V1::UsersController
+  use Api::V1::SecondFactorsController
+  use Site::V1::SecondFactorsController
 end
 
 run AppContainer

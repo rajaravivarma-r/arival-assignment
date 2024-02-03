@@ -11,6 +11,16 @@ services:
     environment:
       - APP_ENV
 
+  auth-service-background:
+    build: .
+    command: "bundle exec sidekiq -r ./config/sidekiq_config.rb"
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+    environment:
+      - APP_ENV
+
   database:
     image: postgres:16.1
     volumes:
