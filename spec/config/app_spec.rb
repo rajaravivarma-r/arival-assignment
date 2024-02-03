@@ -59,7 +59,6 @@ RSpec.describe App do
       # Reload for every example to reflect the ENV changes
       load described_class.config.config_path.join('environment.rb')
       example.run
-
     ensure
       described_class.config.environment = old_environment
       ENV['DATABASE_NAME'] = old_database
