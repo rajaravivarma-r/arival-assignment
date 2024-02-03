@@ -156,19 +156,19 @@ DEPENDENCIES
   database_cleaner-sequel
   dotenv
   dry-validation (~> 1.10)
-  httparty
-  jwt
+  httparty (~> 0.21)
+  jwt (~> 2.7)
   pg (~> 1.5)
   puma (~> 6.4)
   rack-test (~> 2.1)
-  rake
-  rotp
-  rqrcode
+  rake (~> 13.1)
+  rotp (~> 6.3)
+  rqrcode (~> 2.2)
   rspec (~> 3.12)
   rubocop
   rubocop-rspec
   sequel (~> 5.76)
-  sidekiq
+  sidekiq (~> 7.2)
   sinatra (~> 4.0)
   sinatra-contrib
 

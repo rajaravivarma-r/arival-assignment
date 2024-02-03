@@ -22,7 +22,7 @@ RSpec.describe SecondFactor do
 
     context 'when re-enabling' do
       let!(:second_factor) do
-        SecondFactor.create(user_id: user.id, enabled: false)
+        described_class.create(user_id: user.id, enabled: false)
       end
 
       it 'creates a new SecondFactor for the user' do
@@ -31,7 +31,7 @@ RSpec.describe SecondFactor do
         expect(second_factor.backup_codes.size).to eq(0)
         expect do
           described_class.enable_for_user(user)
-        end.to change(described_class, :count).by(0)
+        end.not_to change(described_class, :count)
 
         second_factor = described_class.last
         expect(second_factor.user_id).to eq(user.id)

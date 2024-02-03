@@ -28,14 +28,14 @@ gem 'pg', '~> 1.5'
 
 gem 'bcrypt', '~> 3.1'
 
-gem 'rake', require: false
+gem 'rake', '~> 13.1', require: false
 
-gem 'jwt'
+gem 'jwt', '~> 2.7'
 
-gem 'sidekiq'
+gem 'sidekiq', '~> 7.2'
 
-gem 'rotp'
+gem 'rotp', '~> 6.3'
 
-gem 'rqrcode'
+gem 'rqrcode', '~> 2.2'
 
-gem 'httparty'
+gem 'httparty', '~> 0.21'

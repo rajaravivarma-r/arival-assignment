@@ -73,9 +73,7 @@ class SecondFactor < Sequel::Model
     loop do
       otp_secret = ROTP::Base32.random
       existing_entry = SecondFactor.find(otp_secret:)
-      if existing_entry.nil?
-        return otp_secret
-      end
+      return otp_secret if existing_entry.nil?
     end
   end
 end
