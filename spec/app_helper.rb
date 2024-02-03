@@ -22,4 +22,6 @@ end
 RSpec.configure do |config|
   config.include(TestRequestHelpers)
   config.include(TestResponseHelpers)
+
+  config.example_status_persistence_file_path = App.config.root_path.join('tmp/rspec')
 end
