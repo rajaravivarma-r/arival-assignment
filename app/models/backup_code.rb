@@ -9,6 +9,7 @@ class BackupCode < Sequel::Model
   many_to_one :second_factor
 
   def before_create
+    self.utilized ||= false
     generate_code
   end
 
@@ -21,6 +22,14 @@ class BackupCode < Sequel::Model
         create(second_factor_id: second_factor.id)
       end
     end
+  end
+
+  def utilize!
+    update(utilized: true)
+  end
+
+  def utilized?
+    utilized
   end
 
   private

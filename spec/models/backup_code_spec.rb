@@ -40,4 +40,22 @@ RSpec.describe BackupCode do
       expect(backup_code.code.size).to eq(8)
     end
   end
+
+  describe '#utilize!' do
+    it 'updates utilized to true' do
+      backup_code = described_class.create(second_factor_id: 1)
+      expect(backup_code).not_to be_utilized
+      backup_code.utilize!
+      expect(backup_code.reload).to be_utilized
+    end
+  end
+
+  describe '#utilize?' do
+    it 'returns the utilization status' do
+      backup_code = described_class.create(second_factor_id: 1)
+      expect(backup_code.utilized?).to be(false)
+      backup_code.utilize!
+      expect(backup_code.utilized?).to be(true)
+    end
+  end
 end
