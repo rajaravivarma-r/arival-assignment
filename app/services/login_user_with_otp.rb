@@ -16,7 +16,7 @@ class LoginUserWithOtp < BaseService
   def initialize(verified_user:, otp:)
     super()
     @verified_user = verified_user
-    @otp = otp
+    @otp = otp.to_s
   end
 
   def call

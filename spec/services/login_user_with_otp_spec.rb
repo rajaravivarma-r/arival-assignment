@@ -47,6 +47,19 @@ RSpec.describe LoginUserWithOtp do
       end
     end
 
+    context 'when the OTP is nil' do
+      before { SecondFactor.enable_for_user(user) }
+
+      it 'returns a failure result with an error message' do
+        service = described_class.new(verified_user: user, otp: nil)
+
+        result = service.call
+
+        expect(result.success).to be(false)
+        expect(result.errors.to_h).to eq('otp' => ['invalid otp'])
+      end
+    end
+
     context 'when the a backup code is passed' do
       let(:second_factor) { SecondFactor.enable_for_user(user) }
       let(:backup_code) { second_factor.backup_codes.first }
