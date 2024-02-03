@@ -17,4 +17,9 @@ class RedisConnection
   def url(database: 0)
     "redis://#{password}@#{host}:#{port}/#{database}"
   end
+
+  def client(database: 0)
+    redis_config = RedisClient.config(url: url(database:))
+    redis_config.new_client
+  end
 end
