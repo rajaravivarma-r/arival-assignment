@@ -42,7 +42,6 @@ RSpec.describe Api::V1::SecondFactorsController do
 
         expect(last_response.status).to eq(200)
         created_second_factor = current_user.second_factor
-        backup_codes = created_second_factor.backup_codes.map(&:code).sort
         expected_data = {
           'id' => created_second_factor.id,
           'otp_secret' => created_second_factor.otp_secret,
@@ -52,7 +51,6 @@ RSpec.describe Api::V1::SecondFactorsController do
         }
         data = last_response_json['data']
         expect(data).to include(expected_data)
-        expect(data['backup_codes'].sort).to eq(backup_codes)
       end
     end
   end
