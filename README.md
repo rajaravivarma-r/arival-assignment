@@ -72,6 +72,9 @@ When starting the App for the first time
 ## Linting
 * Run `bundle exec rubocop` or `bundle exec rubocop -A`(!!will autocorrect the files!!) in one of the docker containers
 
+## Postman collection
+* Import the postman collection from tools/postman directory.
+
 ## Testing
 ### Register an user
 - Send body in this format `{"email":"youremail@domain.com","password":"samplePassword","password_verification":"samplePassword"}`
