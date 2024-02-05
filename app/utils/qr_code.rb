@@ -13,7 +13,7 @@ class QRCode
     %(<!DOCTYPE html>
         <html>
           <head>
-            <title>Page Title</title>
+            <title>QR Code</title>
           </head>
           <body>
             <div>
