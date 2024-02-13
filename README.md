@@ -1,10 +1,6 @@
 ## Docker Instructions
-### First time setup
-* When setting up the App for the first time, just bring the database service up by running `docker compose up database`. This will init the database and setup the data directory
-* In another terminal bring the app service up by running `docker compose run -it auth-service /bin/sh` and run the migrations `bundle exec rake db:migrate`
-* After that bring up the web service by running `docker compose up auth-service`
+* Running `docker compose up` will bring up all services like the web server, background worker, database and redis. It also runs the migration that are already available. If you add new migrations then migrate it in a new container by doing `docker compose run -it auth-service /bin/sh` and refer to *Migration* section of the README.
 * To bring the REPL run `docker compose run -it auth-service /bin/sh` and inside the container run `bin/console`
-* To run background jobs bring redis up by running `docker compose up redis`
 
 ## Running background jobs
 * Run `bundle exec sidekiq -r ./config/sidekiq_config.rb` in one of the docker containers
@@ -24,9 +20,9 @@
 ## Production
 To deploy the app in production environment:
     * Set `APP_ENV` and `RACK_ENV` to `production`
+    * Inject all secrets as environment variables using `kubernetes vault` or other mechanism.
     * Use `docker compose -f compose.yml -f compose-production.yml up` to run in production environment
     * Set proper mount points for the volumes. Ideally the database will be running in a managed instance.
-    * Inject all secrets as environment variables using `kubernetes vault` or other mechanism.
 
 ## Debugging
 ### Database debugging
