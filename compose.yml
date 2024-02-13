@@ -1,5 +1,17 @@
 name: auth-service
 services:
+  auth-service-migration:
+    build: .
+    command: >
+      /bin/sh -c "bundle exec rake db:create && bundle exec rake db:migrate"
+    volumes:
+      - .:/app
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - APP_ENV
+
   auth-service:
     build: .
     ports:
@@ -7,7 +19,12 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - database
+      redis:
+        condition: service_started
+      database:
+        condition: service_healthy
+      auth-service-migration:
+        condition: service_completed_successfully
     environment:
       - APP_ENV
 
@@ -17,7 +34,12 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - database
+      redis:
+        condition: service_started
+      database:
+        condition: service_healthy
+      auth-service-migration:
+        condition: service_completed_successfully
     environment:
       - APP_ENV
 
@@ -31,6 +53,11 @@ services:
       - POSTGRES_USER=arival
       - POSTGRES_PASSWORD=73d2df53f2df009d
       - POSTGRES_DB=arival_development
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER --dbname $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:6.2-alpine
